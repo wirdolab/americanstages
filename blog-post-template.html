@@ -1,0 +1,127 @@
+<!--
+  ============================================================
+  BLOG POST TEMPLATE — not a real, published post.
+  Duplicate this file to create each new blog post:
+    1. Rename the copy (e.g. blog-my-new-post-title.html)
+    2. Replace every [PLACEHOLDER] below with the real content
+    3. Swap the cover image in assets/blog/ (or reuse a section-*.jpg)
+    4. Add a card for it in blog.html, linking to your new filename
+    5. Add a link to it from the "More Posts" list on 1-2 other posts
+  ============================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>[Post Title] | American Stages Blog</title>
+<meta name="description" content="[One or two sentences summarizing the post for search results and social shares.]" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="American Stages Realty &amp; Management" />
+<meta property="og:title" content="[Post Title]" />
+<meta property="og:description" content="[One or two sentences summarizing the post.]" />
+<meta property="og:url" content="https://americanstages.com/blog-[slug].html" />
+<meta property="og:image" content="https://americanstages.com/assets/blog/[cover-image].jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="[Post Title]" />
+<meta name="twitter:description" content="[One or two sentences summarizing the post.]" />
+<meta name="twitter:image" content="https://americanstages.com/assets/blog/[cover-image].jpg" />
+<link rel="canonical" href="https://americanstages.com/blog-[slug].html" />
+
+<!-- Structured data: fill in the real title/date/image before publishing -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "[Post Title]",
+  "datePublished": "YYYY-MM-DD",
+  "dateModified": "YYYY-MM-DD",
+  "author": { "@type": "Person", "name": "Brie Camacho" },
+  "publisher": { "@type": "Organization", "name": "American Stages Realty & Management, Inc." },
+  "image": "https://americanstages.com/assets/blog/[cover-image].jpg",
+  "mainEntityOfPage": "https://americanstages.com/blog-[slug].html"
+}
+</script>
+
+<link rel="icon" href="assets/logo-icon.png" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="blog">
+<div class="wrap">
+
+  <div class="topbar">
+    <a href="blog.html" class="back">← All Posts</a>
+    <div class="lang-toggle">
+      <button class="lang-btn on" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="es">ES</button>
+    </div>
+    <a href="tel:8058190911" class="phone"><span class="dot"></span>(805) 819-0911</a>
+  </div>
+
+  <div class="glass-sheet">
+
+  <!--
+    Tag options already styled and ready to use: "Market Update",
+    "Renter Guide", or add your own — it's just plain text in a pill.
+  -->
+  <div class="hero reveal" style="margin-bottom:16px;text-align:left;">
+    <span class="post-tag" data-es="[Etiqueta]">[Tag — e.g. Market Update]</span>
+    <h1 style="font-size:22px;margin-top:10px;">[Post Title Goes Here]</h1>
+    <div class="post-meta">By [Author Name] · [Mon D, YYYY] · [N] min read</div>
+  </div>
+
+  <!-- Cover photo: drop a new image in assets/blog/ and point to it here -->
+  <div class="section-img reveal">
+    <img src="assets/section-pm.jpg" alt="[Describe the photo]" loading="lazy" />
+  </div>
+
+  <!--
+    Article body: use <h2>/<h3> for section headings, <p> for paragraphs,
+    <ul><li> for lists, <strong> for emphasis — all already styled.
+  -->
+  <div class="post-body reveal">
+    <p><em>By [Author Name], [Author Title]</em></p>
+    <p>[Opening paragraph — hook the reader with the question or problem this post answers.]</p>
+    <p>[Second paragraph, setting up what you're about to cover.]</p>
+
+    <h2>[First Section Heading]</h2>
+    <p>[Body copy for this section.]</p>
+    <p>[More body copy if needed.]</p>
+
+    <h2>[Second Section Heading]</h2>
+    <p>[Body copy for this section.]</p>
+    <ul>
+      <li>[Bullet point one]</li>
+      <li>[Bullet point two]</li>
+      <li>[Bullet point three]</li>
+    </ul>
+
+    <h2>[Closing Section Heading]</h2>
+    <p>[Wrap-up paragraph — the takeaway and, if relevant, a soft call to action to contact American Stages.]</p>
+  </div>
+
+  <!-- Sign-off card: matches the real posts' contact block -->
+  <div class="block reveal post-sig">
+    <strong>[Author Name]</strong>
+    <span>[Author Title], American Stages Realty &amp; Property Management</span>
+    <a href="tel:8053450677">805-345-0677</a>
+    <a href="mailto:Brie@americanstages.com">Brie@americanstages.com</a>
+    <span class="dre">CA DRE #01948359 · NMLS ID: 2585046</span>
+  </div>
+
+  <!-- Point these at two other real posts once this one is published -->
+  <div class="label reveal" data-es="Más Artículos">More Posts</div>
+  <div class="post-more reveal">
+    <a href="blog-rent-or-buy-2026.html">Is Now the Right Time to Rent or Buy on the Central Coast in 2026?</a>
+    <a href="blog-market-outlook-2026.html">Closing 2025, Opening 2026: What the Central Coast Real Estate Market Is Really Telling Us</a>
+  </div>
+
+  <div class="foot reveal">
+    <div class="legal" data-es='Contigo, en cada etapa. · © <span id="yr"></span> American Stages Realty &amp; Management, Inc. · CA DRE#02094901 · Igualdad de Oportunidad de Vivienda'>With you, through every stage. · © <span id="yr"></span> American Stages Realty &amp; Management, Inc. · CA DRE#02094901 · Equal Housing Opportunity</div>
+  </div>
+
+  </div>
+</div>
+<script src="assets/app.js" defer></script>
+</body>
+</html>

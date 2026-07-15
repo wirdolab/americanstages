@@ -110,6 +110,18 @@
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-megaphone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4h3l10 5V5L6 10H3z"/><path d="M14 8.2a4 4 0 0 1 0 7.6"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="12"/><line x1="10" y1="20" x2="10" y2="6"/><line x1="16" y1="20" x2="16" y2="14"/><line x1="21" y1="20" x2="21" y2="9"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2-2 2.6-2.6z"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2.2"/><line x1="2" y1="10.5" x2="22" y2="10.5"/></symbol>
+    <symbol id="i-handshake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.2 3.1-5.4 7-5.4s7 2.2 7 5.4"/><circle cx="17.5" cy="8.5" r="2.3"/><path d="M23 20c0-2.4-1.9-4.3-4.7-4.9"/></symbol>
+  </defs>
+</svg>
+
 <div class="wrap">
 
   <div class="topbar">
@@ -123,31 +135,39 @@
 
   <div class="glass-sheet">
 
-  <div class="hero reveal" style="margin-bottom:36px;">
+  <div class="hero reveal" style="margin-bottom:26px;">
     <h1 data-es='Contrata a un <em>Administrador de Propiedades</em>'>Hire a <em>Property Manager</em></h1>
     <p data-es='"Contigo, en cada etapa — desde rentar tu primer apartamento o comprar tu primera casa hasta inversiones inmobiliarias exitosas, estamos contigo en cada paso del camino."<br/><strong style="color:var(--ink);">— Brie Camacho, Presidenta/Corredora</strong>'>"With you, through every stage — from renting your first apartment or buying your first home to thriving real estate investments, we're here every step of the way."<br/><strong style="color:var(--ink);">— Brie Camacho, President/Broker</strong></p>
+  </div>
+
+  <div class="section-img reveal">
+    <img src="assets/section-pm.jpg" alt="Aerial view of a Central Coast neighborhood managed by American Stages" loading="lazy" />
   </div>
 
   <div class="block reveal">
     <h2 data-es="Pon tu propiedad en renta o venta">List your property, for rent or sale</h2>
     <p data-es="Simplificamos el proceso de listar propiedades con nuestra ayuda:">We simplify the process of listing properties with our assistance:</p>
     <ul>
-      <li><strong data-es="Marketing">Marketing</strong><span data-es="Marketing de alto impacto para reducir la vacancia y atraer residentes calificados.">High-impact marketing to reduce vacancy and attract qualified residents.</span></li>
-      <li><strong data-es="Reportes Financieros">Financial Reporting</strong><span data-es="Reportes transparentes para el propietario para que tu inversión rinda.">Transparent, owner-facing reporting so your investment performs.</span></li>
-      <li><strong data-es="Protección contra Desalojos">Eviction Protection</strong><span data-es="Arrendamiento conforme a la ley y selección inteligente de residentes desde el primer día.">Compliant leasing and smart resident screening from day one.</span></li>
+      <li><span class="li-icon"><svg><use href="#i-megaphone"/></svg></span><span class="li-text"><strong data-es="Marketing">Marketing</strong><span data-es="Marketing de alto impacto para reducir la vacancia y atraer residentes calificados.">High-impact marketing to reduce vacancy and attract qualified residents.</span></span></li>
+      <li><span class="li-icon"><svg><use href="#i-chart"/></svg></span><span class="li-text"><strong data-es="Reportes Financieros">Financial Reporting</strong><span data-es="Reportes transparentes para el propietario para que tu inversión rinda.">Transparent, owner-facing reporting so your investment performs.</span></span></li>
+      <li><span class="li-icon"><svg><use href="#i-shield"/></svg></span><span class="li-text"><strong data-es="Protección contra Desalojos">Eviction Protection</strong><span data-es="Arrendamiento conforme a la ley y selección inteligente de residentes desde el primer día.">Compliant leasing and smart resident screening from day one.</span></span></li>
     </ul>
   </div>
 
   <div class="block reveal">
     <h2 data-es="Administración continua">Ongoing management</h2>
     <ul>
-      <li><strong data-es="Mantenimiento">Maintenance</strong><span data-es="Inspecciones detalladas al mudarse, al salir y semestrales — el mantenimiento preventivo se atiende a tiempo.">Detailed inspections at move-in, move-out, and semi-annually — preventative maintenance addressed on time.</span></li>
-      <li><strong data-es="Cobro de Renta">Rent Collection</strong><span data-es="Los residentes pueden pagar en línea vía cheque electrónico, ayudando a que te paguen a tiempo, siempre.">Residents can pay online via e-check, helping you get paid on time, every time.</span></li>
-      <li><strong data-es="Retención de Inquilinos">Tenant Retention</strong><span data-es="Gestionamos las solicitudes de mantenimiento y creamos una estrategia proactiva para una satisfacción duradera.">We manage maintenance requests and craft a proactive maintenance strategy for lasting satisfaction.</span></li>
+      <li><span class="li-icon"><svg><use href="#i-wrench"/></svg></span><span class="li-text"><strong data-es="Mantenimiento">Maintenance</strong><span data-es="Inspecciones detalladas al mudarse, al salir y semestrales — el mantenimiento preventivo se atiende a tiempo.">Detailed inspections at move-in, move-out, and semi-annually — preventative maintenance addressed on time.</span></span></li>
+      <li><span class="li-icon"><svg><use href="#i-card"/></svg></span><span class="li-text"><strong data-es="Cobro de Renta">Rent Collection</strong><span data-es="Los residentes pueden pagar en línea vía cheque electrónico, ayudando a que te paguen a tiempo, siempre.">Residents can pay online via e-check, helping you get paid on time, every time.</span></span></li>
+      <li><span class="li-icon"><svg><use href="#i-handshake"/></svg></span><span class="li-text"><strong data-es="Retención de Inquilinos">Tenant Retention</strong><span data-es="Gestionamos las solicitudes de mantenimiento y creamos una estrategia proactiva para una satisfacción duradera.">We manage maintenance requests and craft a proactive maintenance strategy for lasting satisfaction.</span></span></li>
     </ul>
   </div>
 
-  <a href="https://na4.documents.adobe.com/public/esignWidget?wid=CBFCIBAA3AAABLblqZhDoDIhBjbaTAbhpsGmzOrYNf-093A-6S03ZGa5JXtzWUQKYcGtrsZZDe9DLFTg1zZs*" target="_blank" rel="noopener" class="cta reveal" data-es="Firmar un Contrato de Administración ↗">Sign a Property Management Agreement ↗</a>
+  <div class="ready-card reveal">
+    <h3 data-es="¿Listo para firmar?">Ready to Sign?</h3>
+    <p data-es='Contrato de Administración de Propiedades (PMA) con American Stages Realty &amp; Management, Inc.'>Property Management Agreement (PMA) with American Stages Realty &amp; Management, Inc.</p>
+    <a href="https://na4.documents.adobe.com/public/esignWidget?wid=CBFCIBAA3AAABLblqZhDoDIhBjbaTAbhpsGmzOrYNf-093A-6S03ZGa5JXtzWUQKYcGtrsZZDe9DLFTg1zZs*" target="_blank" rel="noopener" class="cta" data-es="Firmar el Contrato ↗">Sign the Agreement ↗</a>
+  </div>
   <a href="mailto:leasing@americanstages.com?subject=Property%20Management%20inquiry" class="pill reveal" style="display:block;text-align:center;margin-bottom:36px;" data-es="¿Tienes preguntas? Escríbenos primero">Ask a question first — email us</a>
 
   <div class="foot reveal">

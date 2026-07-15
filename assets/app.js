@@ -20,6 +20,7 @@
     { key: 'listings', href: 'listings.html',          label: 'All Listings',      es: 'Todas las Propiedades' },
     { key: 'featured', href: 'featured-listings.html', label: 'Featured Listings', es: 'Propiedades Destacadas' },
     { key: 'markets',  href: 'markets.html',           label: 'Markets',           es: 'Mercados' },
+    { key: 'about',    href: 'about.html',             label: 'About',             es: 'Nosotros' },
     { key: 'contact',  href: 'contact.html',           label: 'Contact',           es: 'Contacto' }
   ];
   var wrap = document.querySelector('.wrap');
@@ -55,6 +56,42 @@
       '<span class="badge"><span class="mls">REALTOR&reg;</span></span>' +
       '<span class="badge"><span class="mls">MLS</span></span>');
     foot.appendChild(badges);
+  });
+
+  /* ---------- Google reviews: a "breaking news"-style scrolling ticker,
+     deliberately placed OUTSIDE the glass-sheet card (as its own bar
+     below it) so it reads as a distinct strip, not just another item
+     inside the footer. The whole bar is one link straight to the
+     "write a review" flow on Google. Quotes are real, verbatim
+     (typo-corrected only) reviews pulled from this business's public
+     Google listing via a third-party aggregator (reviews.birdeye.com),
+     filtered to the clearly positive ones — reviewer names are the
+     public display names shown there. No numeric aggregate rating is
+     hard-coded (that drifts over time); stars are decorative, reflecting
+     the enthusiasm of each quote. Place ID: ChIJ8xwbWaMe7IARbpbhs-F2V5E
+     (American Stages Realty & Management, 3875 Constellation Rd, Lompoc). ---------- */
+  var GOOGLE_ICON = '<svg viewBox="0 0 24 24" width="14" height="14"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>';
+  var GOOGLE_PLACE_ID = 'ChIJ8xwbWaMe7IARbpbhs-F2V5E';
+  var STAR_ICON = '<svg viewBox="0 0 24 24" width="11" height="11" fill="#f2b84b"><path d="M12 2l2.9 6.9 7.4.6-5.6 4.9 1.7 7.3L12 17.9 5.6 21.7l1.7-7.3-5.6-4.9 7.4-.6z"/></svg>';
+  var FIVE_STARS = '<span class="stars">' + new Array(5).fill(STAR_ICON).join('') + '</span>';
+  var TESTIMONIALS = [
+    { quote: 'This property management company is exceptional! They run it like a business and my rental portfolio is benefiting from improved net operating income. They are responsive and I really feel like I am in good hands. I highly recommend.', name: 'Ryan Olsen' },
+    { quote: 'Very professional company and genuinely cares about tenants and landlords. Brie, the owner, really did an excellent job finding us tenants quickly. Very impressed — I highly recommend them.', name: 'Bea Wu' },
+    { quote: 'Brie gets things moving and is very easy to work with. Highly recommend for property management services.', name: 'Ant Mur' }
+  ];
+  var TICKER_ITEMS = TESTIMONIALS.map(function(t){
+    return '<span class="rt-item">' + FIVE_STARS + '<span class="quote">“' + t.quote + '”</span><span class="name">— ' + t.name + '</span></span>';
+  }).join('');
+  document.querySelectorAll('.wrap').forEach(function(wrap){
+    var ticker = document.createElement('a');
+    ticker.className = 'review-ticker';
+    ticker.href = 'https://search.google.com/local/writereview?placeid=' + GOOGLE_PLACE_ID;
+    ticker.target = '_blank';
+    ticker.rel = 'noopener';
+    ticker.innerHTML =
+      '<span class="rt-chip">' + GOOGLE_ICON + '<span data-es="Reseñas">Reviews</span></span>' +
+      '<span class="rt-track-wrap"><span class="rt-track' + (reducedMotion ? '' : ' anim') + '">' + TICKER_ITEMS + TICKER_ITEMS + '</span></span>';
+    wrap.appendChild(ticker);
   });
 
   /* ---------- about / disclosure accordion: full brokerage description
