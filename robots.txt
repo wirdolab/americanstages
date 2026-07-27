@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /blog-post-template.html
+
+Sitemap: https://americanstages.com/sitemap.xml
