@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Property Management | American Stages</title>
 <meta name="description" content="Full-service property management on California's Central Coast — marketing, financial reporting, maintenance, rent collection and tenant retention." />
-<!-- Open Graph / Twitter share preview -->
+
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="American Stages Realty &amp; Management" />
 <meta property="og:title" content="Property Management | American Stages" />
@@ -20,7 +20,6 @@
 <meta name="twitter:image" content="https://americanstages.com/assets/og-image.jpg" />
 <link rel="canonical" href="https://americanstages.com/pm.html" />
 
-<!-- Structured data: RealEstateAgent (NAP, hours, service area, agents) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -109,7 +108,7 @@
 <link rel="icon" href="assets/logo-icon.png" />
 <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="video-page" data-page="pm">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -144,23 +143,31 @@
     <img src="assets/section-pm.jpg" alt="Aerial view of a Central Coast neighborhood managed by American Stages" loading="lazy" />
   </div>
 
-  <div class="block reveal">
-    <h2 data-es="Pon tu propiedad en renta o venta">List your property, for rent or sale</h2>
-    <p data-es="Simplificamos el proceso de listar propiedades con nuestra ayuda:">We simplify the process of listing properties with our assistance:</p>
-    <ul>
-      <li><span class="li-icon"><svg><use href="#i-megaphone"/></svg></span><span class="li-text"><strong data-es="Marketing">Marketing</strong><span data-es="Marketing de alto impacto para reducir la vacancia y atraer residentes calificados.">High-impact marketing to reduce vacancy and attract qualified residents.</span></span></li>
-      <li><span class="li-icon"><svg><use href="#i-chart"/></svg></span><span class="li-text"><strong data-es="Reportes Financieros">Financial Reporting</strong><span data-es="Reportes transparentes para el propietario para que tu inversión rinda.">Transparent, owner-facing reporting so your investment performs.</span></span></li>
-      <li><span class="li-icon"><svg><use href="#i-shield"/></svg></span><span class="li-text"><strong data-es="Protección contra Desalojos">Eviction Protection</strong><span data-es="Arrendamiento conforme a la ley y selección inteligente de residentes desde el primer día.">Compliant leasing and smart resident screening from day one.</span></span></li>
-    </ul>
-  </div>
-
-  <div class="block reveal">
-    <h2 data-es="Administración continua">Ongoing management</h2>
-    <ul>
-      <li><span class="li-icon"><svg><use href="#i-wrench"/></svg></span><span class="li-text"><strong data-es="Mantenimiento">Maintenance</strong><span data-es="Inspecciones detalladas al mudarse, al salir y semestrales — el mantenimiento preventivo se atiende a tiempo.">Detailed inspections at move-in, move-out, and semi-annually — preventative maintenance addressed on time.</span></span></li>
-      <li><span class="li-icon"><svg><use href="#i-card"/></svg></span><span class="li-text"><strong data-es="Cobro de Renta">Rent Collection</strong><span data-es="Los residentes pueden pagar en línea vía cheque electrónico, ayudando a que te paguen a tiempo, siempre.">Residents can pay online via e-check, helping you get paid on time, every time.</span></span></li>
-      <li><span class="li-icon"><svg><use href="#i-handshake"/></svg></span><span class="li-text"><strong data-es="Retención de Inquilinos">Tenant Retention</strong><span data-es="Gestionamos las solicitudes de mantenimiento y creamos una estrategia proactiva para una satisfacción duradera.">We manage maintenance requests and craft a proactive maintenance strategy for lasting satisfaction.</span></span></li>
-    </ul>
+  <!-- Desktop: the two service blocks sit side by side (see
+       body[data-page="pm"] .split-desktop in style.css). Mobile is
+       untouched — plain divs, same stacking order as before. -->
+  <div class="split-desktop">
+    <div class="split-col">
+      <div class="block reveal">
+        <h2 data-es="Pon tu propiedad en renta o venta">List your property, for rent or sale</h2>
+        <p data-es="Simplificamos el proceso de listar propiedades con nuestra ayuda:">We simplify the process of listing properties with our assistance:</p>
+        <ul>
+          <li><span class="li-icon"><svg><use href="#i-megaphone"/></svg></span><span class="li-text"><strong data-es="Marketing">Marketing</strong><span data-es="Marketing de alto impacto para reducir la vacancia y atraer residentes calificados.">High-impact marketing to reduce vacancy and attract qualified residents.</span></span></li>
+          <li><span class="li-icon"><svg><use href="#i-chart"/></svg></span><span class="li-text"><strong data-es="Reportes Financieros">Financial Reporting</strong><span data-es="Reportes transparentes para el propietario para que tu inversión rinda.">Transparent, owner-facing reporting so your investment performs.</span></span></li>
+          <li><span class="li-icon"><svg><use href="#i-shield"/></svg></span><span class="li-text"><strong data-es="Protección contra Desalojos">Eviction Protection</strong><span data-es="Arrendamiento conforme a la ley y selección inteligente de residentes desde el primer día.">Compliant leasing and smart resident screening from day one.</span></span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="split-col">
+      <div class="block reveal">
+        <h2 data-es="Administración continua">Ongoing management</h2>
+        <ul>
+          <li><span class="li-icon"><svg><use href="#i-wrench"/></svg></span><span class="li-text"><strong data-es="Mantenimiento">Maintenance</strong><span data-es="Inspecciones detalladas al mudarse, al salir y semestrales — el mantenimiento preventivo se atiende a tiempo.">Detailed inspections at move-in, move-out, and semi-annually — preventative maintenance addressed on time.</span></span></li>
+          <li><span class="li-icon"><svg><use href="#i-card"/></svg></span><span class="li-text"><strong data-es="Cobro de Renta">Rent Collection</strong><span data-es="Los residentes pueden pagar en línea vía cheque electrónico, ayudando a que te paguen a tiempo, siempre.">Residents can pay online via e-check, helping you get paid on time, every time.</span></span></li>
+          <li><span class="li-icon"><svg><use href="#i-handshake"/></svg></span><span class="li-text"><strong data-es="Retención de Inquilinos">Tenant Retention</strong><span data-es="Gestionamos las solicitudes de mantenimiento y creamos una estrategia proactiva para una satisfacción duradera.">We manage maintenance requests and craft a proactive maintenance strategy for lasting satisfaction.</span></span></li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <div class="ready-card reveal">

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Available Rentals | American Stages</title>
 <meta name="description" content="Browse available rentals in Lompoc, Santa Maria, Buellton, Santa Barbara and the surrounding Central Coast." />
-<!-- Open Graph / Twitter share preview -->
+
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="American Stages Realty &amp; Management" />
 <meta property="og:title" content="Available Rentals | American Stages" />
@@ -20,7 +20,6 @@
 <meta name="twitter:image" content="https://americanstages.com/assets/og-image.jpg" />
 <link rel="canonical" href="https://americanstages.com/rent.html" />
 
-<!-- Structured data: RealEstateAgent (NAP, hours, service area, agents) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -109,7 +108,7 @@
 <link rel="icon" href="assets/logo-icon.png" />
 <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="video-page" data-page="rent">
 <div class="wrap">
 
   <div class="topbar">
@@ -128,23 +127,25 @@
     <p data-es="¿Listo para rentar en Lompoc, Santa María, Buellton, Santa Bárbara o zonas cercanas? Nuestras propiedades son más que rentas — son donde la gente construye su vida.">Ready to rent in Lompoc, Santa Maria, Buellton, Santa Barbara or the surrounding areas? Our properties are more than rentals — it's where people build their lives.</p>
   </div>
 
-  <div class="section-img reveal">
-    <img src="assets/section-rent.jpg" alt="Aerial view of a Central Coast rental neighborhood" loading="lazy" />
-  </div>
+  <!-- Desktop: photo and the availability/CTA info sit side by side (see
+       body[data-page="rent"] .split-desktop in style.css). Mobile is
+       untouched — plain divs, same stacking order as before. -->
+  <div class="split-desktop">
+    <div class="split-col">
+      <div class="section-img reveal">
+        <img src="assets/section-rent.jpg" alt="Aerial view of a Central Coast rental neighborhood" loading="lazy" />
+      </div>
+    </div>
+    <div class="split-col">
+      <div class="idx-note reveal">
+        <strong data-es="Disponibilidad en tiempo real">Live availability</strong>
+        <span data-es="Las rentas disponibles aparecerán aquí automáticamente una vez conectado a nuestro sistema de administración de propiedades. Mientras tanto, solicita abajo y te contactaremos cuando haya unidades disponibles.">Open rentals will appear here automatically once connected to our property management system. In the meantime, apply below and we'll match you as units come open.</span>
+      </div>
 
-  <!--
-    Note: rental availability comes from the property management system
-    (managebuilding.com), not the iHomeFinder MLS/IDX feed — MLS covers
-    for-sale listings only. If/when a rentals API or widget from
-    managebuilding.com is available, this placeholder is where it goes.
-  -->
-  <div class="idx-note reveal">
-    <strong data-es="Disponibilidad en tiempo real">Live availability</strong>
-    <span data-es="Las rentas disponibles aparecerán aquí automáticamente una vez conectado a nuestro sistema de administración de propiedades. Mientras tanto, solicita abajo y te contactaremos cuando haya unidades disponibles.">Open rentals will appear here automatically once connected to our property management system. In the meantime, apply below and we'll match you as units come open.</span>
+      <a href="https://americanstages.managebuilding.com/Resident/rental-application/new" target="_blank" rel="noopener" class="cta reveal" data-es="Solicitar para Rentar →">Apply to Rent →</a>
+      <a href="rental-qualifications.html" class="pill reveal" style="display:block;text-align:center;margin-bottom:36px;" data-es="Requisitos para Rentar">Rental Qualifications</a>
+    </div>
   </div>
-
-  <a href="https://americanstages.managebuilding.com/Resident/rental-application/new" target="_blank" rel="noopener" class="cta reveal" data-es="Solicitar Ahora ↗">Apply Now ↗</a>
-  <a href="rental-qualifications.html" class="pill reveal" style="display:block;text-align:center;margin-bottom:36px;" data-es="Requisitos para Rentar">Rental Qualifications</a>
 
   <div class="foot reveal">
     3875 Constellation Rd, Suite C · Lompoc, CA 93436<br/>

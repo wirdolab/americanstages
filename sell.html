@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Sell My House | Free Market Analysis | American Stages</title>
 <meta name="description" content="Get a free market analysis and sell your California Central Coast property with American Stages Realty & Management." />
-<!-- Open Graph / Twitter share preview -->
+
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="American Stages Realty &amp; Management" />
 <meta property="og:title" content="Sell My House | Free Market Analysis | American Stages" />
@@ -20,7 +20,6 @@
 <meta name="twitter:image" content="https://americanstages.com/assets/og-image.jpg" />
 <link rel="canonical" href="https://americanstages.com/sell.html" />
 
-<!-- Structured data: RealEstateAgent (NAP, hours, service area, agents) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -109,7 +108,7 @@
 <link rel="icon" href="assets/logo-icon.png" />
 <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="video-page" data-page="sell">
 <div class="wrap">
 
   <div class="topbar">
@@ -128,43 +127,46 @@
     <p data-es="Una mirada clara y sin compromiso a lo que vale tu casa hoy.">A clear, no-obligation look at what your home is worth today.</p>
   </div>
 
-  <div class="section-img reveal">
-    <img src="assets/section-sell.jpg" alt="Aerial view of a Central Coast home neighborhood" loading="lazy" />
-  </div>
+  <!-- Desktop: info column and the lead form sit side by side (see
+       body[data-page="sell"] .split-desktop in style.css). Mobile is
+       untouched — plain divs, no mobile styling, same stacking order. -->
+  <div class="split-desktop">
+    <div class="split-col">
+      <div class="section-img reveal">
+        <img src="assets/section-sell.jpg" alt="Aerial view of a Central Coast home neighborhood" loading="lazy" />
+      </div>
 
-  <div class="block reveal">
-    <div class="accent-bar"></div>
-    <h2 data-es="¿Por qué es importante un análisis de mercado de tu casa?">Why does a market analysis of your home matter?</h2>
-    <p data-es="Conocer el valor de tu propiedad es esencial porque te ayuda a tomar decisiones financieras informadas — ya sea que estés pensando en vender, refinanciar, invertir o simplemente monitorear tu capital.">Knowing the value of your property is essential because it helps you make informed financial decisions — whether you're thinking about selling, refinancing, investing, or simply tracking your equity.</p>
-    <p data-es="Te da una imagen clara de lo que vale tu casa en el mercado actual, para que puedas planear con confianza y evitar sobrevalorar o subvalorar tu propiedad. No es solo un número — es la base para decisiones inmobiliarias más inteligentes.">It gives you a clear picture of your home's worth in the current market, so you can plan ahead confidently and avoid overpricing or underselling. It's not just a number — it's the foundation for smarter real estate moves.</p>
+      <div class="block reveal">
+        <div class="accent-bar"></div>
+        <h2 data-es="¿Por qué es importante un análisis de mercado de tu casa?">Why does a market analysis of your home matter?</h2>
+        <p data-es="Conocer el valor de tu propiedad es esencial porque te ayuda a tomar decisiones financieras informadas — ya sea que estés pensando en vender, refinanciar, invertir o simplemente monitorear tu capital.">Knowing the value of your property is essential because it helps you make informed financial decisions — whether you're thinking about selling, refinancing, investing, or simply tracking your equity.</p>
+        <p data-es="Te da una imagen clara de lo que vale tu casa en el mercado actual, para que puedas planear con confianza y evitar sobrevalorar o subvalorar tu propiedad. No es solo un número — es la base para decisiones inmobiliarias más inteligentes.">It gives you a clear picture of your home's worth in the current market, so you can plan ahead confidently and avoid overpricing or underselling. It's not just a number — it's the foundation for smarter real estate moves.</p>
+        <a href="sellers-guide.html" class="pill" style="display:inline-block;margin-top:6px;" data-es="Lee la Guía completa del Vendedor →">Read the full Seller's Guide →</a>
+      </div>
+    </div>
+    <div class="split-col">
+      <div class="label reveal" data-es="Cuéntanos sobre tu propiedad">Tell us about your property</div>
+      <form class="lead reveal" action="mailto:leasing@americanstages.com" method="post" enctype="text/plain">
+        <div class="g2">
+          <input type="text" name="First_Name" placeholder="First name" data-es-placeholder="Nombre" required />
+          <input type="text" name="Last_Name" placeholder="Last name" data-es-placeholder="Apellido" required />
+        </div>
+        <div class="g2">
+          <input type="email" name="Email" placeholder="Email address" data-es-placeholder="Correo electrónico" required />
+          <input type="tel" name="Phone" placeholder="Phone" data-es-placeholder="Teléfono" required />
+        </div>
+        <input type="text" name="Address" placeholder="Property address" data-es-placeholder="Dirección de la propiedad" required />
+        <div class="g2">
+          <select name="Bedrooms"><option value="" data-es="Recámaras">Bedrooms</option><option>1</option><option>2</option><option>3</option><option>4+</option></select>
+          <select name="Bathrooms"><option value="" data-es="Baños">Bathrooms</option><option>1</option><option>2</option><option>3</option><option>4+</option></select>
+        </div>
+        <input type="number" name="SqFt" placeholder="Square footage" data-es-placeholder="Pies cuadrados" />
+        <textarea name="Notes" placeholder="Why are you looking to sell? Tell us more about your situation." data-es-placeholder="¿Por qué buscas vender? Cuéntanos más sobre tu situación."></textarea>
+        <input type="submit" value="Request my free analysis" data-es-value="Solicitar mi análisis gratis" />
+      </form>
+      <div class="form-note" data-es="Esto abrirá tu correo para enviarlo a leasing@americanstages.com.">Opens your email client to send this to leasing@americanstages.com.</div>
+    </div>
   </div>
-
-  <!--
-    Lead capture: submits via mailto so it works with zero backend.
-    Once hosted, swap the form action for a real endpoint (e.g. a
-    serverless function, Formspree, or the iHomeFinder lead API) so
-    submissions land in the CRM instead of an email client.
-  -->
-  <div class="label reveal" data-es="Cuéntanos sobre tu propiedad">Tell us about your property</div>
-  <form class="lead reveal" action="mailto:leasing@americanstages.com" method="post" enctype="text/plain">
-    <div class="g2">
-      <input type="text" name="First_Name" placeholder="First name" data-es-placeholder="Nombre" required />
-      <input type="text" name="Last_Name" placeholder="Last name" data-es-placeholder="Apellido" required />
-    </div>
-    <div class="g2">
-      <input type="email" name="Email" placeholder="Email address" data-es-placeholder="Correo electrónico" required />
-      <input type="tel" name="Phone" placeholder="Phone" data-es-placeholder="Teléfono" required />
-    </div>
-    <input type="text" name="Address" placeholder="Property address" data-es-placeholder="Dirección de la propiedad" required />
-    <div class="g2">
-      <select name="Bedrooms"><option value="" data-es="Recámaras">Bedrooms</option><option>1</option><option>2</option><option>3</option><option>4+</option></select>
-      <select name="Bathrooms"><option value="" data-es="Baños">Bathrooms</option><option>1</option><option>2</option><option>3</option><option>4+</option></select>
-    </div>
-    <input type="number" name="SqFt" placeholder="Square footage" data-es-placeholder="Pies cuadrados" />
-    <textarea name="Notes" placeholder="Why are you looking to sell? Tell us more about your situation." data-es-placeholder="¿Por qué buscas vender? Cuéntanos más sobre tu situación."></textarea>
-    <input type="submit" value="Request my free analysis" data-es-value="Solicitar mi análisis gratis" />
-  </form>
-  <div class="form-note" data-es="Esto abrirá tu correo para enviarlo a leasing@americanstages.com.">Opens your email client to send this to leasing@americanstages.com.</div>
 
   <div class="idx-note reveal">
     <strong data-es="¿Preocupado por el impuesto a la ganancia de capital?">Worried about capital gains tax?</strong>

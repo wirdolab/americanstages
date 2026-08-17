@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Buy Real Estate | American Stages</title>
 <meta name="description" content="Buy real estate on California's Central Coast with American Stages Realty & Management — local expertise from first home to investment property." />
-<!-- Open Graph / Twitter share preview -->
+
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="American Stages Realty &amp; Management" />
 <meta property="og:title" content="Buy Real Estate | American Stages" />
@@ -20,7 +20,6 @@
 <meta name="twitter:image" content="https://americanstages.com/assets/og-image.jpg" />
 <link rel="canonical" href="https://americanstages.com/buy.html" />
 
-<!-- Structured data: RealEstateAgent (NAP, hours, service area, agents) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -109,7 +108,7 @@
 <link rel="icon" href="assets/logo-icon.png" />
 <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="video-page" data-page="buy">
 <div class="wrap">
 
   <div class="topbar">
@@ -128,33 +127,39 @@
     <p data-es="Ya sea tu primera casa, la mejora de tus sueños, o una inversión, combinamos experiencia local con un enfoque personalizado — búsqueda estratégica, negociación experta y resultados comprobados.">Whether it's your first home, your dream upgrade, or an investment, we combine local expertise with a personalized approach — strategic search, skilled negotiation, and a proven track record.</p>
   </div>
 
-  <div class="section-img reveal">
-    <img src="assets/section-buy.jpg" alt="Aerial view of a Central Coast neighborhood with hills in the background" loading="lazy" />
-  </div>
+  <!-- Desktop: image/info column and the lead form sit side by side
+       (see body[data-page="buy"] .split-desktop in style.css). Mobile
+       is untouched — these are plain divs with no mobile styling, so
+       everything just stacks in the same order as before. -->
+  <div class="split-desktop">
+    <div class="split-col">
+      <div class="section-img reveal">
+        <img src="assets/section-buy.jpg" alt="Aerial view of a Central Coast neighborhood with hills in the background" loading="lazy" />
+      </div>
 
-  <!--
-    IDX / listings integration: for-sale listings are pulled live via
-    iHomeFinder (office code 4901). Replace this placeholder block
-    with the iHomeFinder search/results widget embed once set up.
-  -->
-  <div class="idx-note reveal">
-    <strong data-es="Buscar casas">Search homes</strong>
-    <span data-es="Las propiedades en venta aparecerán aquí en tiempo real una vez que se integre el widget de búsqueda IDX.">Live for-sale listings will appear here once the IDX search widget is embedded.</span>
-  </div>
+      <div class="idx-note reveal">
+        <strong data-es="Buscar casas">Search homes</strong>
+        <span data-es="Las propiedades en venta aparecerán aquí en tiempo real una vez que se integre el widget de búsqueda IDX.">Live for-sale listings will appear here once the IDX search widget is embedded.</span>
+      </div>
 
-  <form class="lead reveal" action="mailto:leasing@americanstages.com" method="post" enctype="text/plain">
-    <div class="g2">
-      <input type="text" name="First_Name" placeholder="First name" data-es-placeholder="Nombre" required />
-      <input type="text" name="Last_Name" placeholder="Last name" data-es-placeholder="Apellido" required />
+      <a href="buyers-guide.html" class="pill reveal" style="display:block;text-align:center;margin-bottom:16px;" data-es="Lee la Guía completa del Comprador →">Read the full Buyer's Guide →</a>
     </div>
-    <div class="g2">
-      <input type="email" name="Email" placeholder="Email" data-es-placeholder="Correo electrónico" required />
-      <input type="tel" name="Phone" placeholder="Phone" data-es-placeholder="Teléfono" required />
+    <div class="split-col">
+      <form class="lead reveal" action="mailto:leasing@americanstages.com" method="post" enctype="text/plain">
+        <div class="g2">
+          <input type="text" name="First_Name" placeholder="First name" data-es-placeholder="Nombre" required />
+          <input type="text" name="Last_Name" placeholder="Last name" data-es-placeholder="Apellido" required />
+        </div>
+        <div class="g2">
+          <input type="email" name="Email" placeholder="Email" data-es-placeholder="Correo electrónico" required />
+          <input type="tel" name="Phone" placeholder="Phone" data-es-placeholder="Teléfono" required />
+        </div>
+        <textarea name="Message" placeholder="What are you looking for? Area, budget, timeline..." data-es-placeholder="¿Qué estás buscando? Zona, presupuesto, tiempo..."></textarea>
+        <input type="submit" value="Talk to a Realtor" data-es-value="Hablar con un Agente" />
+      </form>
+      <div class="form-note" data-es="Esto abrirá tu correo para enviarlo a leasing@americanstages.com.">Opens your email client to send this to leasing@americanstages.com.</div>
     </div>
-    <textarea name="Message" placeholder="What are you looking for? Area, budget, timeline..." data-es-placeholder="¿Qué estás buscando? Zona, presupuesto, tiempo..."></textarea>
-    <input type="submit" value="Talk to a Realtor" data-es-value="Hablar con un Agente" />
-  </form>
-  <div class="form-note" data-es="Esto abrirá tu correo para enviarlo a leasing@americanstages.com.">Opens your email client to send this to leasing@americanstages.com.</div>
+  </div>
 
   <div class="foot reveal">
     3875 Constellation Rd, Suite C · Lompoc, CA 93436<br/>

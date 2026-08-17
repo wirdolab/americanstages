@@ -153,13 +153,20 @@ em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--ac
 .lang-btn.on{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;}
 .lang-btn:not(.on):hover{color:var(--accent);}
 
-/* ---------- primary nav pill (Home / All Listings / Featured / Markets / Contact) ---------- */
+/* ---------- primary nav: Rentals / Buy / Sell / Property Management /
+   About / Contact. Simplified IA per the Aug 2026 UX brief. Scrolls
+   horizontally on narrow screens with directional arrow cues + a one-time
+   "swipe to explore" hint; becomes a true full-width bar (no scrolling)
+   on desktop once everything fits. ---------- */
+.nav-wrap{position:relative;display:flex;align-items:center;gap:6px;margin:0 0 16px;}
 .nav-pill{
-  display:flex;align-items:center;gap:2px;width:fit-content;max-width:100%;margin:0 auto 16px;padding:6px;border-radius:16px;box-sizing:border-box;
-  overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none;
+  display:flex;align-items:center;gap:2px;flex:1;min-width:0;padding:6px;border-radius:16px;box-sizing:border-box;
+  overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none;scroll-behavior:smooth;
   background:var(--glass-strong);border:1px solid var(--glass-border);
   -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
   box-shadow:0 14px 34px -18px rgba(23,20,15,.22),inset 0 1px 0 rgba(255,255,255,.6);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 14px),transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 14px),transparent);
 }
 .nav-pill::-webkit-scrollbar{display:none;}
 .nav-pill a{
@@ -168,6 +175,26 @@ em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--ac
 }
 .nav-pill a:hover{color:var(--ink);background:var(--glass-hover);}
 .nav-pill a.active{color:var(--ink);background:var(--glass-hover);box-shadow:inset 0 -2px 0 var(--accent);}
+.nav-arrow{
+  flex-shrink:0;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+  background:var(--glass-strong);border:1px solid var(--glass-border);color:var(--ink-soft);
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  box-shadow:0 10px 22px -14px rgba(23,20,15,.3);transition:all .25s var(--ease);
+}
+.nav-arrow svg{width:15px;height:15px;}
+.nav-arrow:hover{color:var(--accent);border-color:var(--accent);}
+.nav-arrow.hidden{opacity:0;pointer-events:none;transform:scale(.8);}
+.nav-wrap.no-scroll .nav-arrow{display:none;}
+.nav-wrap.no-scroll .nav-pill{-webkit-mask-image:none;mask-image:none;justify-content:center;}
+.nav-hint{
+  position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  font-size:10.5px;font-weight:700;letter-spacing:.03em;color:var(--ink-faint);
+  background:var(--glass-strong);border:1px solid var(--glass-border);padding:5px 11px;border-radius:999px;
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);white-space:nowrap;
+  animation:navHintPulse 1.6s ease-in-out infinite;transition:opacity .5s var(--ease);
+}
+.nav-hint.fade{opacity:0;}
+@keyframes navHintPulse{0%,100%{transform:translateX(-50%) translateX(0);}50%{transform:translateX(-50%) translateX(4px);}}
 
 /* ---------- compliance badges (Equal Housing / REALTOR-MLS) ---------- */
 .compliance{
@@ -178,45 +205,74 @@ em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--ac
 .compliance .badge svg{width:22px;height:22px;color:var(--ink-soft);flex-shrink:0;}
 .compliance .mls{border:1px solid var(--line);border-radius:5px;padding:4px 7px;font-family:var(--mono);font-weight:800;font-size:10px;letter-spacing:.03em;color:var(--ink-soft);}
 
-/* ---------- Google reviews: "breaking news"-style scrolling ticker.
-   Lives outside .glass-sheet (appended to .wrap) so it reads as its own
-   distinct strip below the card. Deliberately broken out to full
-   viewport width (the standard "full-bleed inside a centered container"
-   trick: left:50% + negative half-viewport margins) so it spans edge to
-   edge of the screen regardless of the site's narrower content column. ---------- */
+/* ---------- Google reviews: interactive carousel. Lives outside
+   .glass-sheet (appended to .wrap) so it reads as its own distinct,
+   prominent strip below the card — not buried in the footer. Broken out
+   to full viewport width (left:50% + negative half-viewport margins) so
+   it spans edge to edge regardless of the site's narrower content column.
+   Rebuilt per the Aug 2026 UX brief: bigger, clearer Google branding,
+   real prev/next + dot controls, gentle autoplay with manual override,
+   and click-to-expand quotes. ---------- */
 .review-ticker{
-  display:flex;align-items:center;gap:0;margin-top:18px;overflow:hidden;
-  background:linear-gradient(135deg,#211a12,#2c2318);text-decoration:none;
+  padding:28px 0 30px;margin-top:18px;
+  background:linear-gradient(135deg,#211a12,#2c2318);
   box-shadow:0 -6px 20px -14px rgba(23,20,15,.4);
   position:relative;left:50%;width:100vw;margin-left:-50vw;
 }
-.rt-chip{
-  flex-shrink:0;display:flex;align-items:center;gap:6px;margin:6px 0 6px 16px;padding:7px 12px;
-  border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;
-  font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-family:var(--mono);
-  white-space:nowrap;
+.rt-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  max-width:640px;margin:0 auto 18px;padding:0 22px;
 }
-.rt-track-wrap{
-  flex:1;min-width:0;overflow:hidden;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 26px,#000 calc(100% - 26px),transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 26px,#000 calc(100% - 26px),transparent);
+.rt-brand{display:flex;align-items:center;gap:8px;color:#f4ead9;font-size:14px;font-weight:800;letter-spacing:.01em;}
+.rt-seeall{font-size:11px;font-weight:700;color:#d9b98a;font-family:var(--mono);white-space:nowrap;}
+.rt-seeall:hover{color:#f2d9ae;}
+
+.rt-stage{display:flex;align-items:center;gap:10px;max-width:640px;margin:0 auto;padding:0 14px;}
+.rt-nav{
+  flex-shrink:0;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(255,255,255,.06);border:1px solid rgba(244,234,217,.2);color:#f4ead9;
+  transition:all .25s var(--ease);
 }
-.rt-track{display:flex;align-items:stretch;flex-wrap:nowrap;will-change:transform;}
-.rt-track.anim{animation:rt-scroll 42s linear infinite;}
-.review-ticker:hover .rt-track.anim{animation-play-state:paused;}
-.rt-item{
-  display:flex;flex-direction:column;align-items:flex-start;gap:5px;flex-shrink:0;
-  width:340px;margin:12px 8px;padding:14px 20px;border-radius:14px;
-  border:1px solid rgba(244,234,217,.16);background:rgba(255,255,255,.045);
-  white-space:normal;font-size:12px;color:#f4ead9;
+.rt-nav svg{width:16px;height:16px;}
+.rt-nav:hover{background:rgba(255,255,255,.14);border-color:rgba(244,234,217,.4);}
+
+.rt-slides{flex:1;min-width:0;position:relative;min-height:150px;}
+.rt-slide{
+  display:none;flex-direction:column;align-items:center;text-align:center;gap:10px;
+  padding:16px 8px;animation:bubbleIn .4s var(--ease);
 }
-.rt-item .stars{display:flex;gap:1px;flex-shrink:0;}
-.rt-item .quote{line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
-.rt-item .name{color:#d9b98a;font-weight:700;margin-top:auto;}
-@keyframes rt-scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.rt-slide.active{display:flex;}
+.rt-slide .stars{
+  display:inline-flex;gap:3px;align-items:center;padding:6px 12px;border-radius:999px;
+  background:linear-gradient(135deg,rgba(242,184,75,.22),rgba(242,184,75,.08));
+  border:1px solid rgba(242,184,75,.4);
+}
+.rt-slide .stars svg{width:17px;height:17px;}
+.rt-slide .quote{
+  background:none;border:none;color:#f4ead9;font-size:15px;line-height:1.55;font-family:inherit;
+  cursor:pointer;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+.rt-slide .quote.expanded{-webkit-line-clamp:unset;overflow:visible;}
+.rt-slide .quote:hover{color:#fff;}
+.rt-slide .name{color:#d9b98a;font-weight:700;font-size:13px;margin-top:2px;}
+
+.rt-dots{display:flex;justify-content:center;gap:7px;margin-top:14px;}
+.rt-dot{width:7px;height:7px;border-radius:50%;background:rgba(244,234,217,.3);transition:all .25s var(--ease);}
+.rt-dot.on{background:#d9b98a;width:20px;border-radius:4px;}
+.rt-dot:hover{background:rgba(244,234,217,.55);}
+.rt-counter{font-size:11px;font-family:var(--mono);color:rgba(244,234,217,.6);letter-spacing:.05em;}
+.rt-counter-cur{color:#d9b98a;font-weight:700;}
+
+.rt-write{
+  display:block;text-align:center;margin:18px auto 0;width:fit-content;
+  font-size:11.5px;font-weight:700;color:#f4ead9;font-family:var(--mono);
+  border-bottom:1px solid rgba(244,234,217,.35);padding-bottom:2px;
+}
+.rt-write:hover{color:#fff;border-color:#fff;}
+
 @media(max-width:420px){
-  .rt-chip{font-size:9px;padding:6px 9px;}
-  .rt-item{width:270px;font-size:11px;}
+  .rt-slide .quote{font-size:14px;}
+  .rt-head{padding:0 18px;}
 }
 
 /* ---------- about / disclosure accordion (footer) ---------- */
@@ -240,10 +296,8 @@ em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--ac
 
 /* ---------- brand ---------- */
 .brand{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:26px;}
-.brand img{height:58px;width:auto;margin-bottom:14px;filter:drop-shadow(0 6px 18px rgba(23,20,15,.15));}
-.brand .name{font-size:19px;font-weight:700;letter-spacing:.05em;}
-.brand .sub{font-size:10.5px;font-weight:600;letter-spacing:.24em;color:var(--ink-soft);margin-top:5px;text-transform:uppercase;font-family:var(--mono);}
-.brand .dre{font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--accent);margin-top:10px;font-family:var(--mono);}
+.brand img{height:76px;width:auto;margin-bottom:12px;filter:drop-shadow(0 6px 18px rgba(23,20,15,.15));}
+.brand .dre{font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--accent);margin-top:6px;font-family:var(--mono);}
 
 /* ---------- hero ---------- */
 .hero{text-align:center;margin-bottom:26px;}
@@ -271,6 +325,11 @@ em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--ac
 .cta:hover{transform:translateY(-2px);box-shadow:0 18px 40px -10px var(--glow);}
 .cta:active{transform:translateY(0) scale(.97);}
 
+/* ---------- primary CTA row: big centered "Apply to Rent" on top,
+   Owner/Resident portal pills below as a clearly secondary row. ---------- */
+.cta-row{margin-bottom:6px;}
+.cta-row .portals{margin-top:10px;margin-bottom:24px;}
+
 /* ---------- portal row (glass pills) ---------- */
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:30px;}
 .pill{
@@ -294,7 +353,7 @@ em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--ac
 /* ---------- menu: stack of glass cards ---------- */
 .menu{display:flex;flex-direction:column;gap:10px;margin-bottom:30px;}
 .menu a, .menu button{
-  position:relative;width:100%;display:flex;align-items:center;justify-content:space-between;
+  position:relative;width:100%;display:flex;align-items:center;gap:14px;
   padding:19px 20px;border-radius:16px;
   background:var(--glass);border:1px solid var(--glass-border);
   -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
@@ -307,7 +366,13 @@ em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--ac
   box-shadow:0 18px 36px -16px var(--glow);
 }
 .menu a:active, .menu button:active{transform:translateY(-1px) scale(.985);}
-.menu .arr{color:var(--ink-faint);transition:transform .3s var(--ease),color .3s var(--ease);}
+.menu .mic{
+  flex-shrink:0;width:34px;height:34px;padding:8px;border-radius:12px;color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  box-shadow:0 8px 16px -8px var(--glow);
+}
+.menu a span{flex:1;min-width:0;}
+.menu .arr{flex-shrink:0;color:var(--ink-faint);transition:transform .3s var(--ease),color .3s var(--ease);}
 .menu a:hover .arr, .menu button:hover .arr{transform:translateX(4px);color:var(--accent);}
 
 /* ---------- secondary links ---------- */
@@ -375,6 +440,55 @@ form.lead input[type=submit]:hover{transform:translateY(-2px);box-shadow:0 18px 
 form.lead input[type=submit]:active{transform:translateY(0) scale(.97);}
 .form-note{font-size:11.5px;color:var(--ink-faint);margin-top:-4px;margin-bottom:20px;}
 
+/* ---------- Contact page: quick-contact cards, embedded map, and a
+   condensed team directory (name/role/phone only — full bios live on
+   About and each agent's own page, so Contact doesn't just duplicate
+   About). ---------- */
+.quick-contact{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.qc-card{
+  border:1px solid var(--glass-border);border-radius:16px;padding:16px 14px;background:var(--glass);
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  transition:border-color .3s var(--ease),background .3s var(--ease),transform .3s var(--ease);
+}
+.qc-card:hover{border-color:var(--accent);background:var(--glass-hover);transform:translateY(-2px);}
+.qc-icon{
+  width:34px;height:34px;border-radius:10px;display:grid;place-items:center;margin-bottom:2px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;
+}
+.qc-icon svg{width:17px;height:17px;}
+.qc-card strong{font-size:13px;}
+.qc-card span{font-size:11.5px;color:var(--ink-soft);}
+.qc-hours{cursor:default;}
+
+.map-embed{
+  border-radius:18px;overflow:hidden;margin-bottom:26px;border:1px solid var(--glass-border);
+  box-shadow:0 14px 30px -20px rgba(23,20,15,.3);
+}
+.map-embed iframe{width:100%;height:220px;border:0;display:block;}
+
+.team-quick{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.tq-row{
+  display:flex;align-items:center;gap:10px;padding:13px 16px;border-radius:14px;
+  background:var(--glass);border:1px solid var(--glass-border);
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  transition:border-color .25s var(--ease),background .25s var(--ease);
+}
+.tq-row:hover{border-color:var(--accent);background:var(--glass-hover);}
+.tq-namelink{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.tq-name{font-size:13.5px;font-weight:700;flex-shrink:0;}
+.tq-role{font-size:11.5px;color:var(--ink-faint);flex:1;min-width:0;}
+.tq-tel{font-size:12px;font-weight:700;color:var(--accent);flex-shrink:0;}
+.post-more-link{
+  display:block;text-align:center;font-size:12px;font-weight:700;color:var(--accent);
+  margin-bottom:26px;
+}
+.post-more-link:hover{text-decoration:underline;}
+
+@media(min-width:640px){
+  .quick-contact{grid-template-columns:repeat(4,1fr);}
+}
+
 /* ---------- team ---------- */
 .team{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
 .team .agent{
@@ -434,21 +548,46 @@ form.lead input[type=submit]:active{transform:translateY(0) scale(.97);}
   margin-top:10px;padding-top:10px;
 }
 
-/* ---------- Verified teaser card (homepage) ---------- */
+/* ---------- Mortgage Pre-Qualification (homepage, elevated per Aug 2026
+   UX brief) — stacked block on mobile, horizontal split module on
+   desktop (see the home-page desktop media query below). ---------- */
+.mortgage-block{
+  border:1px solid var(--glass-border);border-radius:20px;padding:24px 22px;margin-bottom:16px;
+  background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  box-shadow:0 14px 30px -20px rgba(23,20,15,.25);
+}
+.mortgage-block h2{font-size:19px;font-weight:700;margin:4px 0 8px;}
+.mortgage-block p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:12px;}
+.mortgage-points{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.mortgage-points li{
+  font-size:12.5px;color:var(--ink-soft);padding-left:20px;position:relative;
+}
+.mortgage-points li::before{
+  content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+}
+.mortgage-cta{width:auto;display:inline-flex;padding:14px 26px;margin-bottom:0;}
+
+/* ---------- Verified teaser card (homepage) — deliberately a different
+   color family (teal/emerald) from the site's brown/gold accent so the
+   BankFree callout pops as its own moment rather than blending into the
+   rest of the page. ---------- */
 .verified-teaser{
-  border:1px solid var(--accent);border-radius:20px;padding:22px 20px;margin-bottom:16px;text-align:center;
-  background:var(--glass-strong);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
-  box-shadow:0 16px 34px -22px var(--glow);
+  --bf:#c19a44;--bf-2:#8a6a2a;
+  border:1px solid rgba(193,154,68,.55);border-radius:20px;padding:22px 20px;margin-bottom:16px;text-align:center;
+  background:linear-gradient(160deg,rgba(193,154,68,.09),var(--glass-strong) 55%);
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  box-shadow:0 16px 34px -22px rgba(138,106,42,.3);
 }
 .verified-badge{
   display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
-  color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2));border-radius:999px;
+  color:var(--bf);background:var(--ink);border:1px solid var(--bf);border-radius:999px;
   padding:4px 10px;margin-bottom:10px;font-family:var(--mono);
 }
 .verified-teaser h2{font-size:18px;font-weight:800;margin-bottom:4px;}
-.tagline{font-size:13px;font-weight:700;color:var(--accent);font-style:italic;margin-bottom:10px;display:block;}
+.verified-teaser .tagline{font-size:13px;font-weight:700;color:var(--bf-2);font-style:italic;margin-bottom:10px;display:block;}
 .verified-teaser p{font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:14px;}
-.verified-teaser .pill{display:inline-block;padding:10px 22px;}
+.verified-teaser .pill{display:inline-block;padding:10px 22px;background:var(--ink);color:var(--bf);border:1px solid var(--bf);}
 
 /* ---------- ready-to-sign card (pm.html) ---------- */
 .ready-card{
@@ -467,12 +606,26 @@ form.lead input[type=submit]:active{transform:translateY(0) scale(.97);}
 .story-collage-side{display:flex;flex-direction:column;gap:8px;min-height:0;}
 .story-collage-side > div{flex:1;border-radius:14px;overflow:hidden;min-height:0;}
 .story-collage-side img{width:100%;height:100%;object-fit:cover;display:block;}
+/* bigger collage variant (About page) — taller, more presence, with a
+   third side photo now that we have one to show. */
+.story-collage-big{height:300px;}
+@media(min-width:640px){ .story-collage-big{height:380px;} }
+
+/* ---------- [PLACEHOLDER] video slot inside a photo collage (Markets
+   city pages) — dashed like .idx-note so it visually reads as "not live
+   yet" rather than a broken image. ---------- */
+.video-slot{
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  border:1px dashed var(--glass-border);border-radius:14px;
+  font-size:10.5px;font-weight:600;color:var(--ink-faint);padding:8px;
+  background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+}
 
 /* ---------- about page: short story + stat bar ---------- */
 .story{text-align:center;margin-bottom:22px;}
 .story p{font-size:14.5px;color:var(--ink-soft);line-height:1.7;max-width:560px;margin:0 auto;}
 .stats-bar{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:30px;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px;
 }
 .stats-bar .stat{
   border:1px solid var(--glass-border);border-radius:16px;padding:18px 10px;text-align:center;
@@ -480,6 +633,13 @@ form.lead input[type=submit]:active{transform:translateY(0) scale(.97);}
 }
 .stats-bar .stat .num{font-size:24px;font-weight:800;color:var(--accent);font-family:var(--mono);}
 .stats-bar .stat .lbl{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);margin-top:5px;line-height:1.3;}
+.stats-note{
+  text-align:center;font-size:10.5px;color:var(--ink-faint);font-family:var(--mono);
+  margin-bottom:30px;letter-spacing:.02em;
+}
+@media(min-width:520px){
+  .stats-bar{grid-template-columns:repeat(4,1fr);}
+}
 
 /* ---------- about page: larger team spotlight ---------- */
 .team-lg{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}
@@ -604,6 +764,23 @@ form.lead input[type=submit]:active{transform:translateY(0) scale(.97);}
 .chat-input button:hover{transform:scale(1.06);}
 .chat-input button svg{width:14px;height:14px;}
 
+/* ---------- Markets hub: city cards linking to each community page ---------- */
+.market-cards{display:flex;flex-direction:column;gap:14px;margin-bottom:24px;}
+.market-card{
+  display:flex;align-items:center;gap:14px;border:1px solid var(--glass-border);border-radius:18px;
+  padding:10px;background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  transition:border-color .3s var(--ease),background .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease);
+}
+.market-card:hover{border-color:var(--accent);background:var(--glass-hover);transform:translateY(-2px);box-shadow:0 14px 30px -18px var(--glow);}
+.market-card-img{width:84px;height:84px;flex-shrink:0;border-radius:14px;overflow:hidden;}
+.market-card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.market-card-body{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.market-card-body strong{font-size:15px;}
+.market-card-body span{font-size:12.5px;color:var(--ink-soft);}
+@media(min-width:640px){
+  .market-cards{display:grid;grid-template-columns:repeat(2,1fr);}
+}
+
 /* ---------- blog: index card list ---------- */
 .blog-list{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}
 .blog-card{
@@ -660,4 +837,221 @@ form.lead input[type=submit]:active{transform:translateY(0) scale(.97);}
   .team-lg .agent{flex-direction:column;align-items:center;text-align:center;}
   .team-lg .agent .name-row{justify-content:center;}
   .story-collage{height:160px;}
+}
+
+/* =========================================================
+   DESKTOP HOMEPAGE — Aug 2026 UX brief, phase 1
+   Mobile keeps the existing vertical, card-based layout
+   untouched (that's the approved mobile-first foundation).
+   At wider viewports the homepage composition widens and
+   goes horizontal instead of just stretching the same narrow
+   column — true horizontal nav, services in a row, a split
+   mortgage module — so desktop feels spacious/premium rather
+   than an enlarged phone screen. Scoped to body[data-page=home]
+   for this first pass; the same system extends to other pages
+   once this is approved (per the brief's own rollout plan).
+   ========================================================= */
+@media(min-width:860px){
+  /* Nav becomes a real horizontal bar site-wide once it fits without
+     scrolling — low-risk, applies everywhere since it's a shared
+     component and only kicks in when there's room. Larger type + even
+     spacing so the six items read clearly across the full bar width
+     instead of looking clustered in the middle; mobile keeps the small,
+     scrollable version untouched. */
+  .nav-pill a{padding:15px 22px;font-size:15px;font-weight:700;}
+  .nav-wrap.no-scroll .nav-pill{justify-content:space-evenly;}
+
+  /* ---------- Site-wide desktop pass, phase 2 (Aug 2026 UX brief §9:
+     "extend the same system to the remaining pages" once the homepage
+     is approved). Every page gets a wider, more spacious card instead
+     of the same narrow mobile column stretched out — the brief's core
+     complaint about "enlarged phone screen." Component grids below only
+     turn on where multiple similar cards already exist (team rosters,
+     blog posts, qualification cards) so single-column reading pages
+     (FAQs, forms, long-form guides) stay comfortably narrow rather than
+     stretching line length too far. ---------- */
+  .wrap{max-width:760px;padding-top:36px;}
+  .glass-sheet{padding:46px 54px 44px;border-radius:32px;}
+
+  /* General desktop type bump — small at mobile-column widths starts to
+     look thin/cramped once the card is this much wider. Line-heights
+     nudged up too for breathing room. */
+  .hero h1{font-size:30px;}
+  .hero p{font-size:15.5px;line-height:1.65;}
+  .label{font-size:12px;}
+  .story p{font-size:16px;line-height:1.8;max-width:620px;}
+  .block h2{font-size:21px;}
+  .block p{font-size:15.5px;line-height:1.8;}
+  .block li{font-size:14.5px;}
+  .idx-note{font-size:14px;padding:22px;}
+  .idx-note strong{font-size:14.5px;}
+  .qual-card h3{font-size:16.5px;}
+  .qual-card p, .qual-card ul{font-size:13.5px;}
+  form.lead input, form.lead textarea, form.lead select{font-size:14.5px;padding:14px 16px;}
+  .foot{font-size:13px;}
+
+  .blog-list{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+  .qual-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+
+  body[data-page="about"] .team-lg{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  body[data-page="testimonials"] .team{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  body[data-page="testimonials"] .team .agent{flex-direction:column;align-items:flex-start;text-align:left;}
+  body[data-page="markets"] .market-cards{grid-template-columns:repeat(3,1fr);}
+}
+
+@media(min-width:900px){
+  body[data-page="home"] .wrap{max-width:1180px;padding-top:36px;}
+  body[data-page="home"] .glass-sheet{padding:58px 68px 54px;border-radius:32px;}
+
+  body[data-page="home"] .brand{margin-bottom:20px;}
+  body[data-page="home"] .brand img{height:150px;margin-bottom:14px;}
+  body[data-page="home"] .brand .dre{font-size:13px;}
+  body[data-page="home"] .hero{max-width:720px;margin:0 auto 30px;}
+  body[data-page="home"] .hero h1{font-size:42px;}
+  body[data-page="home"] .hero p{font-size:17px;line-height:1.65;margin-top:14px;}
+
+  /* Big, centered "Apply to Rent" on top; Owner/Resident portals as a
+     narrower, clearly secondary row underneath (not beside it) — per
+     follow-up feedback on the first desktop pass. */
+  body[data-page="home"] .cta-row{
+    display:flex;flex-direction:column;align-items:center;margin-bottom:34px;
+  }
+  body[data-page="home"] .cta-row .cta{width:auto;min-width:340px;padding:19px 48px;font-size:15px;margin-bottom:0;}
+  body[data-page="home"] .cta-row .portals{width:100%;max-width:420px;margin-top:14px;}
+
+  body[data-page="home"] .menu{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  body[data-page="home"] .menu a{
+    flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;
+    min-height:150px;padding:26px 18px;gap:12px;
+  }
+  body[data-page="home"] .menu .mic{width:56px;height:56px;padding:14px;border-radius:16px;}
+  body[data-page="home"] .menu a span{flex:none;font-size:14.5px;}
+  body[data-page="home"] .menu .arr{align-self:center;}
+
+  /* Mortgage section, centered and airy — replaces the earlier left/right
+     split, which read as cramped. Everything (heading, copy, bullets,
+     button) is centered on one column with more line-height/spacing so
+     it doesn't feel amontonado. */
+  body[data-page="home"] .mortgage-block{
+    padding:44px 56px;text-align:center;
+  }
+  body[data-page="home"] .mortgage-copy{max-width:600px;margin:0 auto;}
+  body[data-page="home"] .mortgage-copy .label{text-align:center;}
+  body[data-page="home"] .mortgage-block h2{font-size:26px;line-height:1.3;margin:8px 0 14px;}
+  body[data-page="home"] .mortgage-block p{font-size:15.5px;line-height:1.7;margin-bottom:20px;}
+  body[data-page="home"] .mortgage-points{
+    flex-direction:row;flex-wrap:wrap;justify-content:center;gap:12px 28px;margin-bottom:26px;
+  }
+  body[data-page="home"] .mortgage-points li{font-size:13px;}
+  body[data-page="home"] .mortgage-cta{margin:0 auto;}
+
+  /* BankFree teaser — same idea: constrain width so the paragraph text
+     doesn't stretch edge-to-edge of the wide desktop card, keep it
+     centered and add breathing room between lines. */
+  body[data-page="home"] .verified-teaser{
+    max-width:600px;margin-left:auto;margin-right:auto;padding:34px 40px;
+  }
+  body[data-page="home"] .verified-teaser h2{font-size:22px;}
+  body[data-page="home"] .verified-teaser p{font-size:14.5px;line-height:1.75;}
+
+  body[data-page="home"] .row2.sec{max-width:640px;margin-left:auto;margin-right:auto;}
+
+  body[data-page="home"] .rt-head,
+  body[data-page="home"] .rt-stage{max-width:760px;}
+
+  /* ---------- Site-wide desktop pass, phase 3: widen the remaining
+     transactional + city pages the same way the homepage was widened,
+     so they read as a full desktop composition rather than the generic
+     760px stretched-mobile-column look every other page still had.
+     Mobile is untouched — these are desktop-only overrides. ---------- */
+  body[data-page="buy"] .wrap,
+  body[data-page="sell"] .wrap,
+  body[data-page="rent"] .wrap,
+  body[data-page="pm"] .wrap,
+  body[data-page="contact"] .wrap,
+  body[data-page="about"] .wrap,
+  body[data-page="lompoc-pm"] .wrap,
+  body[data-page="santa-maria"] .wrap,
+  body[data-page="santa-barbara-goleta"] .wrap,
+  body[data-page="buellton"] .wrap,
+  body[data-page="slo"] .wrap{
+    max-width:1100px;
+  }
+  body[data-page="buy"] .glass-sheet,
+  body[data-page="sell"] .glass-sheet,
+  body[data-page="rent"] .glass-sheet,
+  body[data-page="pm"] .glass-sheet,
+  body[data-page="contact"] .glass-sheet,
+  body[data-page="about"] .glass-sheet,
+  body[data-page="lompoc-pm"] .glass-sheet,
+  body[data-page="santa-maria"] .glass-sheet,
+  body[data-page="santa-barbara-goleta"] .glass-sheet,
+  body[data-page="buellton"] .glass-sheet,
+  body[data-page="slo"] .glass-sheet{
+    padding:52px 60px 50px;
+  }
+  body[data-page="buy"] .hero h1,
+  body[data-page="sell"] .hero h1,
+  body[data-page="rent"] .hero h1,
+  body[data-page="pm"] .hero h1,
+  body[data-page="contact"] .hero h1,
+  body[data-page="about"] .hero h1{
+    font-size:36px;
+  }
+  body[data-page="buy"] .hero p,
+  body[data-page="sell"] .hero p,
+  body[data-page="rent"] .hero p,
+  body[data-page="pm"] .hero p,
+  body[data-page="contact"] .hero p{
+    font-size:16.5px;line-height:1.7;
+  }
+  body[data-page="buy"] .hero,
+  body[data-page="sell"] .hero,
+  body[data-page="rent"] .hero,
+  body[data-page="pm"] .hero,
+  body[data-page="contact"] .hero{
+    max-width:780px;margin-left:auto;margin-right:auto;
+  }
+
+  /* ---------- About page desktop composition — was missed in the
+     earlier passes. Taller photo collage, wider stat bar with bigger
+     numbers, and the 5-agent team grid moves from 2 columns (awkward
+     lone card on the last row) to 3 so it reads as 3+2 instead. ---------- */
+  body[data-page="about"] .hero{text-align:center;}
+  body[data-page="about"] .story-collage-big{height:460px;}
+  body[data-page="about"] .story p{font-size:16px;line-height:1.85;max-width:680px;}
+  body[data-page="about"] .stats-bar{gap:18px;margin-bottom:16px;}
+  body[data-page="about"] .stats-bar .stat{padding:26px 16px;}
+  body[data-page="about"] .stats-bar .stat .num{font-size:34px;}
+  body[data-page="about"] .stats-bar .stat .lbl{font-size:11px;}
+  body[data-page="about"] .team-lg{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+  }
+  body[data-page="about"] .team-lg .agent{
+    flex-direction:column;align-items:center;text-align:center;padding:26px 22px;
+  }
+  body[data-page="about"] .team-lg .agent .name-row{justify-content:center;}
+  body[data-page="about"] .team-lg .agent .avatar{width:104px;height:104px;}
+
+  /* ---------- Desktop split layout, phase 2 of extending the system
+     beyond the homepage: pairs an image/info column with a form or
+     secondary info column on the service + city pages, instead of one
+     long stacked mobile column. .split-col is just a plain wrapper div
+     (no mobile styling), so mobile stacking is completely unaffected. ---------- */
+  body[data-page="buy"] .split-desktop,
+  body[data-page="sell"] .split-desktop,
+  body[data-page="rent"] .split-desktop,
+  body[data-page="pm"] .split-desktop,
+  body[data-page="contact"] .split-desktop,
+  body[data-page="lompoc-pm"] .split-desktop,
+  body[data-page="santa-maria"] .split-desktop,
+  body[data-page="santa-barbara-goleta"] .split-desktop,
+  body[data-page="buellton"] .split-desktop,
+  body[data-page="slo"] .split-desktop{
+    display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start;
+  }
+  .split-col{min-width:0;}
+  /* rent.html's split has only a photo on the left — center it vertically
+     against the taller info column on the right. */
+  body[data-page="rent"] .split-desktop{align-items:center;}
 }

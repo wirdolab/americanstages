@@ -12,26 +12,83 @@
   /* ---------- footer year ---------- */
   document.querySelectorAll('#yr').forEach(function(el){ el.textContent = new Date().getFullYear(); });
 
-  /* ---------- primary nav pill (mirrors the iHomeFinder IDX nav: Home / All
-     Listings / Featured Listings / Markets / Contact). Active tab is set by
+  /* ---------- primary nav: simplified per the Aug 2026 UX feedback brief.
+     Suggested IA — Rentals / Buy / Sell / Property Management / About /
+     Contact — six items so it reads clearly at a glance on mobile and fits
+     as a true horizontal bar (no scrolling needed) on desktop. "All
+     Listings" / "Featured Listings" are reachable from the Rentals/Buy
+     pages instead of cluttering primary nav. Active tab is set by
      <body data-page="..."> on each file. ---------- */
   var NAV_ITEMS = [
-    { key: 'home',     href: 'index.html',             label: 'Home',              es: 'Inicio' },
-    { key: 'listings', href: 'listings.html',          label: 'All Listings',      es: 'Todas las Propiedades' },
-    { key: 'featured', href: 'featured-listings.html', label: 'Featured Listings', es: 'Propiedades Destacadas' },
-    { key: 'markets',  href: 'markets.html',           label: 'Markets',           es: 'Mercados' },
-    { key: 'about',    href: 'about.html',             label: 'About',             es: 'Nosotros' },
-    { key: 'contact',  href: 'contact.html',           label: 'Contact',           es: 'Contacto' }
+    { key: 'rent',    href: 'rent.html',    label: 'Rentals',             es: 'Rentas' },
+    { key: 'buy',     href: 'buy.html',     label: 'Buy',                 es: 'Comprar' },
+    { key: 'sell',    href: 'sell.html',    label: 'Sell',                es: 'Vender' },
+    { key: 'pm',      href: 'pm.html',      label: 'Property Management', es: 'Administración' },
+    { key: 'about',   href: 'about.html',   label: 'About',               es: 'Nosotros' },
+    { key: 'contact', href: 'contact.html', label: 'Contact',             es: 'Contacto' }
   ];
   var wrap = document.querySelector('.wrap');
   if (wrap) {
     var currentPage = document.body.getAttribute('data-page') || '';
+
+    var navWrap = document.createElement('div');
+    navWrap.className = 'nav-wrap';
+
     var nav = document.createElement('nav');
     nav.className = 'nav-pill';
     nav.innerHTML = NAV_ITEMS.map(function(item){
       return '<a href="' + item.href + '" data-es="' + item.es + '"' + (item.key === currentPage ? ' class="active"' : '') + '>' + item.label + '</a>';
     }).join('');
-    wrap.prepend(nav);
+
+    /* Directional swipe cues: left/right arrow buttons that appear only
+       when there's more nav to scroll to in that direction, plus a
+       one-time "swipe to explore" hint on first mobile visit (both
+       reviewer notes — Gary and Cynthia — flagged the swipe behavior as
+       unclear without a cue). */
+    var arrowL = document.createElement('button');
+    arrowL.type = 'button';
+    arrowL.className = 'nav-arrow nav-arrow-l';
+    arrowL.setAttribute('aria-label', 'Scroll navigation left');
+    arrowL.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>';
+    var arrowR = document.createElement('button');
+    arrowR.type = 'button';
+    arrowR.className = 'nav-arrow nav-arrow-r';
+    arrowR.setAttribute('aria-label', 'Scroll navigation right');
+    arrowR.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+
+    navWrap.appendChild(arrowL);
+    navWrap.appendChild(nav);
+    navWrap.appendChild(arrowR);
+    wrap.prepend(navWrap);
+
+    function updateArrows(){
+      var max = nav.scrollWidth - nav.clientWidth;
+      var overflowing = max > 4;
+      navWrap.classList.toggle('no-scroll', !overflowing);
+      arrowL.classList.toggle('hidden', !overflowing || nav.scrollLeft <= 4);
+      arrowR.classList.toggle('hidden', !overflowing || nav.scrollLeft >= max - 4);
+    }
+    arrowL.addEventListener('click', function(){ nav.scrollBy({ left: -140, behavior: 'smooth' }); });
+    arrowR.addEventListener('click', function(){ nav.scrollBy({ left: 140, behavior: 'smooth' }); });
+    nav.addEventListener('scroll', updateArrows);
+    window.addEventListener('resize', updateArrows);
+    updateArrows();
+
+    if (!localStorage.getItem('as_nav_hint_seen')) {
+      var hint = document.createElement('span');
+      hint.className = 'nav-hint';
+      hint.setAttribute('data-es', 'Desliza para explorar →');
+      hint.textContent = 'Swipe to explore →';
+      navWrap.appendChild(hint);
+      var dismissHint = function(){
+        hint.classList.add('fade');
+        localStorage.setItem('as_nav_hint_seen', '1');
+        setTimeout(function(){ hint.remove(); }, 500);
+        nav.removeEventListener('scroll', dismissHint);
+      };
+      nav.addEventListener('scroll', dismissHint, { once: true });
+      setTimeout(dismissHint, 4500);
+    }
   }
 
   /* ---------- compliance badges: Equal Housing Opportunity + REALTOR/MLS.
@@ -58,40 +115,151 @@
     foot.appendChild(badges);
   });
 
-  /* ---------- Google reviews: a "breaking news"-style scrolling ticker,
-     deliberately placed OUTSIDE the glass-sheet card (as its own bar
-     below it) so it reads as a distinct strip, not just another item
-     inside the footer. The whole bar is one link straight to the
-     "write a review" flow on Google. Quotes are real, verbatim
-     (typo-corrected only) reviews pulled from this business's public
-     Google listing via a third-party aggregator (reviews.birdeye.com),
-     filtered to the clearly positive ones — reviewer names are the
-     public display names shown there. No numeric aggregate rating is
-     hard-coded (that drifts over time); stars are decorative, reflecting
-     the enthusiasm of each quote. Place ID: ChIJ8xwbWaMe7IARbpbhs-F2V5E
-     (American Stages Realty & Management, 3875 Constellation Rd, Lompoc). ---------- */
-  var GOOGLE_ICON = '<svg viewBox="0 0 24 24" width="14" height="14"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>';
+  /* ---------- Google reviews: interactive carousel, deliberately placed
+     OUTSIDE the glass-sheet card (as its own bar below it) so it reads as
+     a distinct, prominent strip rather than a buried footer item. Rebuilt
+     per the Aug 2026 UX feedback brief — reviewers said the old auto-
+     scrolling ticker felt "too hidden." Now: bigger cards, clear Google
+     branding, reliable prev/next controls + dot indicators (not just
+     hover-to-pause), gentle autoplay that pauses on any interaction, and
+     click-to-expand so the full quote can be read without leaving the
+     page. Quotes are real, verbatim (typo-corrected only) reviews pulled
+     from this business's public Google listing — first names only shown
+     per privacy preference, no relative post date, star count reflects
+     each reviewer's actual rating. No numeric aggregate rating/count is
+     hard-coded here since we don't have a live, verified figure to show;
+     wire this up to the real Google Business Profile rating/count before
+     launch instead of guessing at a number. Place ID:
+     ChIJ8xwbWaMe7IARbpbhs-F2V5E (American Stages Realty & Management,
+     3875 Constellation Rd, Lompoc). ---------- */
+  var GOOGLE_ICON = '<svg viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>';
   var GOOGLE_PLACE_ID = 'ChIJ8xwbWaMe7IARbpbhs-F2V5E';
-  var STAR_ICON = '<svg viewBox="0 0 24 24" width="11" height="11" fill="#f2b84b"><path d="M12 2l2.9 6.9 7.4.6-5.6 4.9 1.7 7.3L12 17.9 5.6 21.7l1.7-7.3-5.6-4.9 7.4-.6z"/></svg>';
-  var FIVE_STARS = '<span class="stars">' + new Array(5).fill(STAR_ICON).join('') + '</span>';
+  var STAR_ICON = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#f2b84b"><path d="M12 2l2.9 6.9 7.4.6-5.6 4.9 1.7 7.3L12 17.9 5.6 21.7l1.7-7.3-5.6-4.9 7.4-.6z"/></svg>';
+  var STAR_ICON_EMPTY = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="rgba(244,234,217,.35)" stroke-width="1.6"><path d="M12 2l2.9 6.9 7.4.6-5.6 4.9 1.7 7.3L12 17.9 5.6 21.7l1.7-7.3-5.6-4.9 7.4-.6z"/></svg>';
+  function starsHtml(n){
+    var full = Math.max(0, Math.min(5, n || 5));
+    var html = '';
+    for (var s = 0; s < 5; s++) html += (s < full ? STAR_ICON : STAR_ICON_EMPTY);
+    return '<span class="stars" aria-label="' + full + ' out of 5 stars">' + html + '</span>';
+  }
+  /* Real, verbatim (typo-corrected only) Google reviews for American
+     Stages Realty & Management, transcribed from screenshots of the
+     business's public Google Business Profile (Aug 2026). Per the site
+     owner's instruction: first names only (last names/initials stripped
+     for privacy), no relative post date shown, and each card reflects
+     the reviewer's actual star rating rather than an assumed 5. */
   var TESTIMONIALS = [
-    { quote: 'This property management company is exceptional! They run it like a business and my rental portfolio is benefiting from improved net operating income. They are responsive and I really feel like I am in good hands. I highly recommend.', name: 'Ryan Olsen' },
-    { quote: 'Very professional company and genuinely cares about tenants and landlords. Brie, the owner, really did an excellent job finding us tenants quickly. Very impressed — I highly recommend them.', name: 'Bea Wu' },
-    { quote: 'Brie gets things moving and is very easy to work with. Highly recommend for property management services.', name: 'Ant Mur' }
+    { stars: 5, quote: 'Ian Wilkerson came to repair our sink, he’s a very professional gentleman who’s knowledgeable and polite, we are very pleased with his work and recommend American Stages to all our friends and family. Thank you!', name: 'Richard' },
+    { stars: 5, quote: 'I had a great experience working with the leasing and maintenance team. Fafi was professional, responsive, and easy to communicate with throughout the process. Whenever I had a question or needed assistance, I received a prompt response and felt like my concerns were taken seriously. I really appreciated the friendly customer service and would recommend them to others.', name: 'Alonzo' },
+    { stars: 5, quote: 'American Stages walked us through our new home purchase in Vandenberg Village (Lompoc). They were impeccable each step of the way. Brie did video tours of the home at least 3, maybe 4 times. I would love to pay high compliments for Brie, Fafi, Anthony and Ian for helping us buy this beautiful home we are finally living in.', name: 'Steven' },
+    { stars: 5, quote: 'Fantastic property management company. I work with this company a lot as a contractor. Great people to work with. They are honest and professional. A pleasant experience every time. I highly recommend American Stages whether you are buying, selling, or leasing.', name: 'Stephen' },
+    { stars: 5, quote: 'Really appreciate this company stepping up for our local baseball team and sponsoring them. It means a lot when support is coming from all corners of town!', name: 'Cierra' },
+    { stars: 5, quote: 'Thank you for sponsoring the LLL cap baseball team, the Astros! Looking forward to a great season with Coach Ian, and will absolutely be recommending your business to my friends and family.', name: 'Sarah' },
+    { stars: 5, quote: 'I wanted to share that American Stages Realty and Management is a professional and experienced team. They are knowledgeable and able to explain and answer any questions that you may have at any given time. Their professionalism and quick response are appreciated with any realty or management process. I highly recommend them for your realty needs.', name: 'Stephanie' },
+    { stars: 5, quote: 'Kevin was super nice and helpful, showed me a bunch of available units at different properties! He was very knowledgeable and informative, especially as a first time renter — I really appreciated him and all his help!', name: 'Grace' },
+    { stars: 5, quote: 'Amy was very helpful and kind to us. Every time we had a question, Amy answered it and explained it to us with good detail. We appreciated the help she gave us.', name: 'Romario' },
+    { stars: 5, quote: 'Brianne and Amy were fantastic to work with. They helped me purchase a great investment property and now manage it for me. If you want a go-getter that won’t leave you guessing, choose this office!', name: 'Christina' },
+    { stars: 4, quote: 'Thank you American Stages, especially the Maintenance Department, for always being so professional and taking care of any issues I have encountered in a timely manner.', name: 'Carmen' },
+    { stars: 5, quote: 'Kevin is very kind and helpful. He answered all the questions I had and got back to me super quick — definitely helped as a first time renter! Definitely recommend!', name: 'Daniela' },
+    { stars: 5, quote: 'I have had multiple interactions with Mr. Kevin and both were a pleasure. I highly recommend requesting/working with him. He is punctual, respectful and honest. Kevin is eager to earn your business and will go the extra mile to obtain it.', name: 'Austin' },
+    { stars: 5, quote: 'This was my very first time applying for a rental — I’ve only ever rented through private parties or family before. Gavin and I couldn’t be happier to have been paired with Kevin Sanchez! He was incredibly professional, friendly, and always had answers to our questions. Kevin made the whole process feel easy and stress-free.', name: 'Ashley' },
+    { stars: 5, quote: 'This is an excellent property management company. They are real people who treat us with respect. Their maintenance team is friendly, responsive and efficient whenever we report an issue.', name: 'Brandy' },
+    { stars: 5, quote: 'I loved how they treat me, how they make each part of the process special, and also answered all my questions.', name: 'Sofía' },
+    { stars: 5, quote: 'Good customer service, management trained properly and they’re nice.', name: 'Nancy' },
+    { stars: 5, quote: 'Super helpful with my home. Love the customer service and how fast they responded.', name: 'Ralph' },
+    { stars: 5, quote: 'Great company, very reliable and hard working individuals. Always looking out for customers.', name: 'Jacob' },
+    { stars: 5, quote: 'Very great people, didn’t have trouble with no communication, very respectful — definitely recommend to others that are looking for future homes. Very impressive with their team, got a lot of patience — definitely 5 stars in my book!', name: 'Jaciel' },
+    { stars: 5, quote: 'I had an awesome experience with American Stages. This team has been extremely helpful answering multiple questions I’ve had; consistently has been one of their fortes in customer service!', name: 'Cesar' },
+    { stars: 5, quote: 'Working with American Stages has been a genuinely positive experience. Their team is not only professional but also impressively responsive, always quick to tackle any issues or questions that come up. If you’re looking for a dependable and attentive property management company, I wouldn’t hesitate to recommend American Stages.', name: 'Keegan' },
+    { stars: 5, quote: 'I had a great experience working with American Stages Realty. The team was professional, responsive, and truly cared about finding the right fit for me. They made the entire process smooth and stress-free. Highly recommend if you’re looking for a team that’s reliable and easy to work with.', name: 'Bryce' },
+    { stars: 5, quote: 'American Stages have been amazing — the team has been very helpful and patient with answering all my questions of realty and providing me with the best customer service!', name: 'Brainard' },
+    { stars: 5, quote: 'Love this company, they never fail to help me out when I need!', name: 'Chris' },
+    { stars: 5, quote: 'Excellent service and the staff is very knowledgeable. I definitely recommend.', name: 'Austin' },
+    { stars: 5, quote: 'I can’t recommend American Stages enough! Their team is professional, responsive, and truly dedicated to providing outstanding service. From day one, they made renting out my property easy and stress-free. They’re great at communicating, handle maintenance issues quickly, and always go above and beyond.', name: 'Natalia' },
+    { stars: 5, quote: 'I’ve had amazing experiences with American Stages property management. They’re incredibly organized, proactive, and always keep me informed about what’s going on with my property. Highly recommend their services to anyone looking for reliable management!', name: 'Paulina' },
+    { stars: 5, quote: 'The staff at American Stages Realty and Management is hands down the best in the 805. Their professionalism, responsiveness, and dedication to their clients are unmatched. If you’re looking for top-tier service, they’re the ones to call!', name: 'Fernando' },
+    { stars: 5, quote: 'American Stages helped me get in a home with their extremely fast service while keeping me educated on the process of purchasing a house. I would recommend this company to people who are not too sure where to get started because they will help you every step of the way.', name: 'Jon' }
   ];
-  var TICKER_ITEMS = TESTIMONIALS.map(function(t){
-    return '<span class="rt-item">' + FIVE_STARS + '<span class="quote">“' + t.quote + '”</span><span class="name">— ' + t.name + '</span></span>';
-  }).join('');
-  document.querySelectorAll('.wrap').forEach(function(wrap){
-    var ticker = document.createElement('a');
-    ticker.className = 'review-ticker';
-    ticker.href = 'https://search.google.com/local/writereview?placeid=' + GOOGLE_PLACE_ID;
-    ticker.target = '_blank';
-    ticker.rel = 'noopener';
-    ticker.innerHTML =
-      '<span class="rt-chip">' + GOOGLE_ICON + '<span data-es="Reseñas">Reviews</span></span>' +
-      '<span class="rt-track-wrap"><span class="rt-track' + (reducedMotion ? '' : ' anim') + '">' + TICKER_ITEMS + TICKER_ITEMS + '</span></span>';
-    wrap.appendChild(ticker);
+  var REVIEW_WRITE_URL = 'https://search.google.com/local/writereview?placeid=' + GOOGLE_PLACE_ID;
+  var REVIEW_SEE_ALL_URL = 'https://www.google.com/maps/place/?q=place_id:' + GOOGLE_PLACE_ID;
+
+  document.querySelectorAll('.wrap').forEach(function(wrapEl){
+    var section = document.createElement('div');
+    section.className = 'review-ticker';
+
+    var slides = TESTIMONIALS.map(function(t, i){
+      return '<div class="rt-slide' + (i === 0 ? ' active' : '') + '" data-i="' + i + '">' +
+        starsHtml(t.stars) +
+        '<button type="button" class="quote">“' + t.quote + '”</button>' +
+        '<span class="name">— ' + t.name + '</span>' +
+      '</div>';
+    }).join('');
+
+    // With 30 slides, individual dots get cluttered — switch to a
+    // simple "3 / 30" counter once the list is longer than a handful.
+    var useCounter = TESTIMONIALS.length > 8;
+    var dotsHtml = useCounter
+      ? '<span class="rt-counter"><span class="rt-counter-cur">1</span> / ' + TESTIMONIALS.length + '</span>'
+      : TESTIMONIALS.map(function(_, i){
+          return '<button type="button" class="rt-dot' + (i === 0 ? ' on' : '') + '" data-i="' + i + '" aria-label="Show review ' + (i + 1) + '"></button>';
+        }).join('');
+
+    section.innerHTML =
+      '<div class="rt-head">' +
+        '<span class="rt-brand">' + GOOGLE_ICON + '<span data-es="Reseñas de Google">Google Reviews</span></span>' +
+        '<a class="rt-seeall" href="' + REVIEW_SEE_ALL_URL + '" target="_blank" rel="noopener" data-es="Ver todas ↗">See all ↗</a>' +
+      '</div>' +
+      '<div class="rt-stage">' +
+        '<button type="button" class="rt-nav rt-prev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>' +
+        '<div class="rt-slides">' + slides + '</div>' +
+        '<button type="button" class="rt-nav rt-next" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>' +
+      '</div>' +
+      '<div class="rt-dots">' + dotsHtml + '</div>' +
+      '<a class="rt-write" href="' + REVIEW_WRITE_URL + '" target="_blank" rel="noopener" data-es="Escribe una reseña en Google →">Write a Google review →</a>';
+
+    wrapEl.appendChild(section);
+
+    var slideEls = section.querySelectorAll('.rt-slide');
+    var dotEls = section.querySelectorAll('.rt-dot');
+    var counterEl = section.querySelector('.rt-counter-cur');
+    var idx = 0, timer = null;
+
+    function show(n){
+      idx = (n + TESTIMONIALS.length) % TESTIMONIALS.length;
+      slideEls.forEach(function(el, i){ el.classList.toggle('active', i === idx); });
+      dotEls.forEach(function(el, i){ el.classList.toggle('on', i === idx); });
+      if (counterEl) counterEl.textContent = idx + 1;
+    }
+    function stopAuto(){ if (timer) { clearInterval(timer); timer = null; } }
+    function startAuto(){
+      if (reducedMotion || TESTIMONIALS.length < 2) return;
+      stopAuto();
+      timer = setInterval(function(){ show(idx + 1); }, 4000);
+    }
+    function userAction(fn){ return function(){ stopAuto(); fn(); startAuto(); }; }
+
+    section.querySelector('.rt-prev').addEventListener('click', userAction(function(){ show(idx - 1); }));
+    section.querySelector('.rt-next').addEventListener('click', userAction(function(){ show(idx + 1); }));
+    dotEls.forEach(function(dot){
+      dot.addEventListener('click', userAction(function(){ show(parseInt(dot.getAttribute('data-i'), 10)); }));
+    });
+    /* click a quote to expand the full text in place (removes clamp) */
+    section.querySelectorAll('.quote').forEach(function(q){
+      q.addEventListener('click', function(){ q.classList.toggle('expanded'); });
+    });
+    /* basic touch swipe on mobile */
+    var touchX = null;
+    var stage = section.querySelector('.rt-stage');
+    stage.addEventListener('touchstart', function(e){ touchX = e.touches[0].clientX; stopAuto(); }, { passive: true });
+    stage.addEventListener('touchend', function(e){
+      if (touchX === null) return;
+      var dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 40) show(dx < 0 ? idx + 1 : idx - 1);
+      touchX = null;
+      startAuto();
+    });
+
+    startAuto();
   });
 
   /* ---------- about / disclosure accordion: full brokerage description
@@ -99,10 +267,10 @@
      (click "About American Stages" to expand) so it stays out of the way
      on every page without cluttering the footer. ---------- */
   var ABOUT_EN =
-    "<p>American Stages Realty &amp; Property Management is the Central Coast partner for buying, selling, leasing, and managing homes across Lompoc, Santa Barbara/Goleta, Santa Maria, San Luis Obispo (SLO), and all of California. Our full-service brokerage and property management team delivers local market expertise, compliant leasing, smart resident screening, high-impact marketing, and transparent owner reporting—so your transaction or rental performs. Whether you're relocating near Vandenberg Space Force Base, listing a home, investing in a rental, or need day-to-day management and maintenance, we combine data-driven pricing with responsive communication to protect value and reduce vacancy. Ready to move with confidence on California's Central Coast? Contact American Stages for a tailored plan that keeps your property—and your goals—on track.</p>" +
+    "<p>American Stages Realty &amp; Property Management is the Central Coast partner for buying, selling, leasing, and managing homes across Lompoc, Santa Barbara, Goleta, Santa Maria, San Luis Obispo (SLO), and all of California. Our full-service brokerage and property management team delivers local market expertise, compliant leasing, smart resident screening, high-impact marketing, and transparent owner reporting—so your transaction or rental performs. Whether you're relocating near Vandenberg Space Force Base, listing a home, investing in a rental, or need day-to-day management and maintenance, we combine data-driven pricing with responsive communication to protect value and reduce vacancy. Ready to move with confidence on California's Central Coast? Contact American Stages for a tailored plan that keeps your property—and your goals—on track.</p>" +
     "<p>Whether you're buying your first home, upgrading to your dream property, or selling to begin your next chapter, our brokerage is here to guide you every step of the way. We combine deep local expertise with a personalized approach to make your experience seamless, stress-free, and rewarding. Buyers can count on us to uncover the best opportunities to match their lifestyle and goals, while sellers benefit from our strategic marketing, skilled negotiations, and proven track record of maximizing value. With integrity, dedication, and a true commitment to success, we ensure your real estate journey is handled with care from start to finish.</p>";
   var ABOUT_ES =
-    "<p>American Stages Realty &amp; Property Management es el socio de la Costa Central para comprar, vender, arrendar y administrar propiedades en Lompoc, Santa Bárbara/Goleta, Santa María, San Luis Obispo (SLO) y en toda California. Nuestro equipo de bienes raíces y administración de propiedades de servicio completo ofrece experiencia en el mercado local, arrendamiento conforme a la ley, selección inteligente de residentes, marketing de alto impacto y reportes transparentes para el propietario, para que tu transacción o renta rinda resultados. Ya sea que te estés mudando cerca de la Base de la Fuerza Espacial Vandenberg, listando una casa, invirtiendo en una renta, o necesites administración y mantenimiento del día a día, combinamos precios basados en datos con comunicación receptiva para proteger el valor y reducir la vacancia. ¿Listo para avanzar con confianza en la Costa Central de California? Contacta a American Stages para un plan personalizado que mantenga tu propiedad — y tus metas — en curso.</p>" +
+    "<p>American Stages Realty &amp; Property Management es el socio de la Costa Central para comprar, vender, arrendar y administrar propiedades en Lompoc, Santa Bárbara, Goleta, Santa María, San Luis Obispo (SLO) y en toda California. Nuestro equipo de bienes raíces y administración de propiedades de servicio completo ofrece experiencia en el mercado local, arrendamiento conforme a la ley, selección inteligente de residentes, marketing de alto impacto y reportes transparentes para el propietario, para que tu transacción o renta rinda resultados. Ya sea que te estés mudando cerca de la Base de la Fuerza Espacial Vandenberg, listando una casa, invirtiendo en una renta, o necesites administración y mantenimiento del día a día, combinamos precios basados en datos con comunicación receptiva para proteger el valor y reducir la vacancia. ¿Listo para avanzar con confianza en la Costa Central de California? Contacta a American Stages para un plan personalizado que mantenga tu propiedad — y tus metas — en curso.</p>" +
     "<p>Ya sea que estés comprando tu primera casa, mejorando a la propiedad de tus sueños, o vendiendo para comenzar tu siguiente capítulo, nuestro equipo está aquí para guiarte en cada paso del camino. Combinamos experiencia local profunda con un enfoque personalizado para que tu experiencia sea fluida, sin estrés y gratificante. Los compradores pueden confiar en que descubriremos las mejores oportunidades para su estilo de vida y metas, mientras que los vendedores se benefician de nuestro marketing estratégico, negociaciones expertas y un historial comprobado de maximizar el valor. Con integridad, dedicación y un compromiso genuino con el éxito, garantizamos que tu experiencia inmobiliaria se maneje con cuidado de principio a fin.</p>";
 
   document.querySelectorAll('.foot').forEach(function(foot){
@@ -182,6 +350,39 @@
     revealEls.forEach(function(el){ io.observe(el); });
   } else {
     revealEls.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* ---------- animated stat counters (About page "Our Story" numbers).
+     Counts up from 0 to data-target once the stats bar scrolls into
+     view; data-suffix (e.g. "+", "d") is appended after counting
+     finishes. Respects prefers-reduced-motion by jumping straight to
+     the final value. ---------- */
+  var statEls = document.querySelectorAll('.stats-bar .num[data-target]');
+  if (statEls.length) {
+    var animateStat = function(el){
+      var target = parseInt(el.getAttribute('data-target'), 10) || 0;
+      var suffix = el.getAttribute('data-suffix') || '';
+      if (reducedMotion) { el.textContent = target + suffix; return; }
+      var start = null, duration = 1400;
+      function step(ts){
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(eased * target) + (p >= 1 ? suffix : '');
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    };
+    if ('IntersectionObserver' in window) {
+      var statIo = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting) { animateStat(entry.target); statIo.unobserve(entry.target); }
+        });
+      }, { threshold: 0.4 });
+      statEls.forEach(function(el){ statIo.observe(el); });
+    } else {
+      statEls.forEach(animateStat);
+    }
   }
 
   /* ================= AI CHAT WIDGET ================= */
