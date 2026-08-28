@@ -229,7 +229,9 @@
   </div>
 
   <div class="label reveal" data-es="Envíanos un mensaje" style="margin-top:26px;">Send us a message</div>
-  <form class="lead reveal" action="mailto:leasing@americanstages.com" method="post" enctype="text/plain">
+  <form id="leadForm" class="lead reveal" action="https://api.web3forms.com/submit" method="POST">
+    <input type="hidden" name="access_key" value="a2f42fab-dfb3-463a-9c6b-71c304213034" />
+    <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off" />
     <div class="g2">
       <input type="text" name="First_Name" placeholder="First name" data-es-placeholder="Nombre" required />
       <input type="text" name="Last_Name" placeholder="Last name" data-es-placeholder="Apellido" required />
@@ -246,9 +248,10 @@
       <option data-es="Administración de Propiedades">Property Management</option>
       <option data-es="Otro">Other</option>
     </select>
+    <input type="hidden" name="subject" value="New website lead — American Stages" />
     <input type="submit" value="Send message" data-es-value="Enviar mensaje" />
   </form>
-  <div class="form-note" data-es="Esto abrirá tu correo para enviarlo a leasing@americanstages.com.">Opens your email client to send this to leasing@americanstages.com.</div>
+  <div id="leadFormStatus" class="form-note" data-es="Normalmente respondemos dentro de un día hábil.">We typically reply within one business day.</div>
 
   <div class="social reveal">
     <a href="https://www.instagram.com/americanstagespm/" target="_blank" rel="noopener" title="Instagram"><svg><use href="#i-instagram"/></svg></a>

@@ -385,6 +385,60 @@
     }
   }
 
+  /* ---------- lead form (Contact page): real submission via Web3Forms
+     instead of the old mailto: action. mailto: only opens the visitor's
+     own email client — unreliable on mobile and easy to abandon. Web3Forms'
+     access_key is not tied to a specific domain (unlimited domains even on
+     the free plan), so this same code + key works unchanged on the
+     Cloudflare/GitHub Pages preview and later on the live
+     americanstages.com domain — no re-wiring needed at cutover. Swap the
+     "YOUR_ACCESS_KEY_HERE" placeholder in contact.html for the real access
+     key from web3forms.com once the free account is set up (250
+     submissions/mo free, HTTPS + encrypted at rest, honeypot spam
+     filtering already wired into the form). ---------- */
+  var leadForm = document.getElementById('leadForm');
+  if (leadForm) {
+    var leadStatus = document.getElementById('leadFormStatus');
+    var leadStatusDefault = leadStatus ? leadStatus.innerHTML : '';
+    leadForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var lang = localStorage.getItem('as_lang') === 'es' ? 'es' : 'en';
+      var submitBtn = leadForm.querySelector('input[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+      fetch(leadForm.action, {
+        method: 'POST',
+        body: new FormData(leadForm),
+        headers: { 'Accept': 'application/json' }
+      }).then(function(res){
+        if (submitBtn) submitBtn.disabled = false;
+        if (!leadStatus) return;
+        if (res.ok) {
+          leadForm.reset();
+          leadStatus.textContent = lang === 'es'
+            ? 'Gracias — recibimos tu mensaje y te responderemos dentro de un día hábil.'
+            : "Thanks — we got your message and will reply within one business day.";
+          leadStatus.classList.add('ok');
+          leadStatus.classList.remove('err');
+        } else {
+          leadStatus.textContent = lang === 'es'
+            ? 'Hubo un problema al enviar tu mensaje. Llama al (805) 819-0911 ext. 19 o escribe a leasing@americanstages.com directamente.'
+            : "Something went wrong sending that. Please call (805) 819-0911 ext. 19 or email leasing@americanstages.com directly.";
+          leadStatus.classList.add('err');
+          leadStatus.classList.remove('ok');
+        }
+      }).catch(function(){
+        if (submitBtn) submitBtn.disabled = false;
+        if (!leadStatus) return;
+        var lang2 = localStorage.getItem('as_lang') === 'es' ? 'es' : 'en';
+        leadStatus.textContent = lang2 === 'es'
+          ? 'Hubo un problema al enviar tu mensaje. Llama al (805) 819-0911 ext. 19 o escribe a leasing@americanstages.com directamente.'
+          : "Something went wrong sending that. Please call (805) 819-0911 ext. 19 or email leasing@americanstages.com directly.";
+        leadStatus.classList.add('err');
+        leadStatus.classList.remove('ok');
+      });
+    });
+  }
+
   /* ================= AI CHAT WIDGET ================= */
   var ICON_CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
   var ICON_SEND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z"/></svg>';
