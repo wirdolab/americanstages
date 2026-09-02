@@ -40,7 +40,7 @@
  * ============================================================
  */
 
-const GEMINI_MODEL = 'gemini-2.5-flash'; // free-tier eligible model (2.0 Flash was shut down by Google on 2026-06-01 — see aistudio.google.com for the current free-tier lineup if this ever needs to change again)
+const GEMINI_MODEL = 'gemini-3.6-flash'; // free-tier eligible model (2.0 Flash shut down 2026-06-01; 2.5 Flash retired for new users as of Sept 2026 — Google's own 404 response pointed to this replacement. Check aistudio.google.com for the current free-tier lineup if this ever needs to change again)
 const MAX_TOKENS = 600;
 const MAX_HISTORY = 12; // trim long conversations before they hit the API
 
