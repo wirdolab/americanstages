@@ -388,6 +388,16 @@ em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--ac
 .social a:hover{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 10px 24px -8px var(--glow);transform:translateY(-2px);}
 .social svg{width:16px;height:16px;}
 
+/* ---------- agent icon links (email / Instagram) ---------- */
+.agent-links{display:flex;gap:8px;margin-top:8px;}
+.agent-links a{
+  width:32px;height:32px;border-radius:50%;border:1px solid var(--glass-border);background:var(--glass);
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  display:grid;place-items:center;transition:all .3s var(--ease);color:var(--ink-soft);flex-shrink:0;
+}
+.agent-links a:hover{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 8px 20px -8px var(--glow);transform:translateY(-2px);}
+.agent-links svg{width:15px;height:15px;}
+
 /* ---------- content blocks (sub-pages) ---------- */
 .block{margin-bottom:28px;}
 .block h2{font-size:19px;font-weight:600;margin-bottom:10px;}
