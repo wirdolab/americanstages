@@ -385,20 +385,22 @@
     }
   }
 
-  /* ---------- lead form (Contact page): real submission via Web3Forms
-     instead of the old mailto: action. mailto: only opens the visitor's
-     own email client — unreliable on mobile and easy to abandon. Web3Forms'
+  /* ---------- lead forms (Contact, Buy, Sell): real submission via
+     Web3Forms instead of mailto:. mailto: only opens the visitor's own
+     email client — unreliable on mobile and easy to abandon. Web3Forms'
      access_key is not tied to a specific domain (unlimited domains even on
      the free plan), so this same code + key works unchanged on the
      Cloudflare/GitHub Pages preview and later on the live
-     americanstages.com domain — no re-wiring needed at cutover. Swap the
-     "YOUR_ACCESS_KEY_HERE" placeholder in contact.html for the real access
-     key from web3forms.com once the free account is set up (250
-     submissions/mo free, HTTPS + encrypted at rest, honeypot spam
-     filtering already wired into the form). ---------- */
-  var leadForm = document.getElementById('leadForm');
-  if (leadForm) {
-    var leadStatus = document.getElementById('leadFormStatus');
+     americanstages.com domain — no re-wiring needed at cutover. Any form
+     with class "web3form" is picked up automatically (no per-page JS
+     needed) — its status message is expected to be the .form-note element
+     immediately after the form in the DOM. 250 submissions/mo free on this
+     access key, HTTPS + encrypted at rest, honeypot spam filtering already
+     wired into each form. ---------- */
+  var leadForms = document.querySelectorAll('form.web3form');
+  leadForms.forEach(function(leadForm){
+    var leadStatus = leadForm.nextElementSibling;
+    if (!leadStatus || !leadStatus.classList.contains('form-note')) leadStatus = null;
     var leadStatusDefault = leadStatus ? leadStatus.innerHTML : '';
     leadForm.addEventListener('submit', function(e){
       e.preventDefault();
@@ -437,7 +439,7 @@
         leadStatus.classList.remove('ok');
       });
     });
-  }
+  });
 
   /* ================= AI CHAT WIDGET ================= */
   var ICON_CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
