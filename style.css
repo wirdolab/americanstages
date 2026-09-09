@@ -452,6 +452,19 @@ form.lead input[type=submit]:active{transform:translateY(0) scale(.97);}
 .form-note.ok{color:#2f8a5c;font-weight:600;}
 .form-note.err{color:#c0503a;font-weight:600;}
 
+/* ---------- newsletter signup card ---------- */
+.newsletter{
+  border:1px solid var(--accent);border-radius:20px;padding:24px 22px;text-align:center;
+  background:var(--glass-strong);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  margin-bottom:28px;box-shadow:0 16px 34px -22px var(--glow);
+}
+.newsletter h2{font-size:18px;font-weight:800;margin-bottom:4px;}
+.newsletter p{font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:16px;}
+.newsletter-form{margin-bottom:0 !important;}
+.newsletter-form .g2{grid-template-columns:1fr 1.3fr;}
+.newsletter-form input[type=submit]{margin-top:0;}
+.newsletter-hp{position:absolute;left:-5000px;}
+
 /* ---------- Contact page: quick-contact cards, embedded map, and a
    condensed team directory (name/role/phone only — full bios live on
    About and each agent's own page, so Contact doesn't just duplicate
