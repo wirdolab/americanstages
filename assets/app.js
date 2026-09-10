@@ -407,6 +407,21 @@
       var lang = localStorage.getItem('as_lang') === 'es' ? 'es' : 'en';
       var submitBtn = leadForm.querySelector('input[type="submit"]');
       if (submitBtn) submitBtn.disabled = true;
+      /* Web3Forms auto-uses a field literally named "email" (lowercase) as
+         the Reply-To address; our fields are capitalized (Email), so set
+         it explicitly here to guarantee replies go straight to the lead,
+         not back into the Web3Forms system. */
+      var emailField = leadForm.querySelector('input[type="email"]');
+      if (emailField) {
+        var replyTo = leadForm.querySelector('input[name="replyto"]');
+        if (!replyTo) {
+          replyTo = document.createElement('input');
+          replyTo.type = 'hidden';
+          replyTo.name = 'replyto';
+          leadForm.appendChild(replyTo);
+        }
+        replyTo.value = emailField.value;
+      }
       fetch(leadForm.action, {
         method: 'POST',
         body: new FormData(leadForm),
