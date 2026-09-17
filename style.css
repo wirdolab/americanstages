@@ -465,6 +465,68 @@ form.lead input[type=submit]:active{transform:translateY(0) scale(.97);}
 .newsletter-form input[type=submit]{margin-top:0;}
 .newsletter-hp{position:absolute;left:-5000px;}
 
+/* ---------- PM lead funnel (pm-get-started.html) ---------- */
+.funnel-progress{margin-bottom:24px;}
+.funnel-progress-label{
+  font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink-faint);font-family:var(--mono);margin-bottom:8px;
+}
+.funnel-progress-track{height:4px;border-radius:999px;background:var(--line);overflow:hidden;}
+.funnel-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .4s var(--ease);}
+
+.funnel-step{display:none;}
+.funnel-step.active{display:block;animation:funnelIn .45s var(--ease);}
+@keyframes funnelIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.funnel-q{font-size:21px;font-weight:800;margin-bottom:6px;line-height:1.25;}
+.funnel-sub{font-size:13.5px;color:var(--ink-soft);line-height:1.6;margin-bottom:20px;}
+
+.option-cards{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:8px;}
+.option-card{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+  padding:16px 18px;border-radius:14px;border:1px solid var(--glass-border);background:var(--glass);
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  font-family:inherit;font-size:14.5px;font-weight:600;color:var(--ink);text-align:left;
+  transition:border-color .22s var(--ease),background .22s var(--ease),transform .22s var(--ease);
+  min-height:52px;
+}
+.option-card:hover{border-color:var(--accent);background:var(--glass-hover);transform:translateY(-1px);}
+.option-card.selected{
+  border-color:var(--accent);color:var(--accent-2);
+  background:linear-gradient(135deg,var(--glow-soft),var(--glass-strong));
+  box-shadow:0 10px 24px -16px var(--glow);
+}
+.option-card .oc-check{
+  flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:center;color:#fff;
+  transition:background .22s var(--ease),border-color .22s var(--ease);
+}
+.option-card.selected .oc-check{background:var(--accent);border-color:var(--accent);}
+.option-card .oc-check svg{width:12px;height:12px;opacity:0;transition:opacity .15s var(--ease);}
+.option-card.selected .oc-check svg{opacity:1;}
+
+.funnel-back{
+  display:inline-flex;align-items:center;gap:4px;background:none;border:none;padding:0;
+  font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:16px;cursor:pointer;transition:color .2s var(--ease);
+}
+.funnel-back:hover{color:var(--accent);}
+
+.funnel-nav{margin-top:6px;}
+.funnel-error{font-size:12px;color:#c0503a;font-weight:600;margin-top:-4px;margin-bottom:14px;}
+.funnel-consent{
+  display:flex;align-items:flex-start;gap:9px;font-size:12px;color:var(--ink-soft);line-height:1.5;
+  margin:2px 0 16px;
+}
+.funnel-consent input{flex:none;margin-top:2px;width:16px;height:16px;accent-color:var(--accent);}
+
+.funnel-confirm{display:none;}
+.funnel-confirm.active{display:block;animation:funnelIn .45s var(--ease);}
+@media(min-width:520px){
+  .option-cards{grid-template-columns:1fr 1fr;}
+}
+button.cta{border:none;font-family:inherit;}
+
 /* ---------- Contact page: quick-contact cards, embedded map, and a
    condensed team directory (name/role/phone only — full bios live on
    About and each agent's own page, so Contact doesn't just duplicate

@@ -26,6 +26,15 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=274748563628705&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+<!-- iHomeFinder IDX (Kestrel) — demo/testing integration, Custom HTML platform -->
+<script src="https://kestrel.idxhome.com/ihf-kestrel.js"></script>
+<script>
+	window.ihfKestrel = window.ihfKestrel || {};
+	ihfKestrel.config = {
+		platform: "",
+		activationToken: "BFC64E51-E575-1CC5-8281481D59045AAC",
+	};
+</script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>All Listings | American Stages</title>
@@ -154,9 +163,10 @@ src="https://www.facebook.com/tr?id=274748563628705&ev=PageView&noscript=1"
     <p data-es="Cada propiedad en venta activa en Lompoc, Santa María, Santa Bárbara, Goleta, SLO y la Costa Central, directamente del MLS.">Every active for-sale listing across Lompoc, Santa Maria, Santa Barbara, Goleta, SLO and the Central Coast, pulled straight from the MLS.</p>
   </div>
 
-  <div class="idx-note reveal">
-    <strong data-es="Búsqueda MLS en vivo">Live MLS search</strong>
-    <span data-es="La cuadrícula completa de búsqueda de propiedades aparecerá aquí una vez que se active en el sitio. Mientras tanto, contáctanos directamente y te enviaremos las coincidencias actuales.">The full property search grid will render here once it's fully connected to the site. In the meantime, reach out directly and we'll send you current matches.</span>
+  <div id="idxWidget" class="reveal">
+    <script>
+    	document.currentScript.replaceWith(ihfKestrel.render());
+    </script>
   </div>
 
   <a href="mailto:leasing@americanstages.com?subject=Listings%20inquiry" class="cta reveal" data-es="Recibir Coincidencias por Correo">Get Matches By Email</a>

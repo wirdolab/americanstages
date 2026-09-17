@@ -12,6 +12,42 @@
   /* ---------- footer year ---------- */
   document.querySelectorAll('#yr').forEach(function(el){ el.textContent = new Date().getFullYear(); });
 
+  /* ---------- UTM / gclid capture ----------
+     Generic, sitewide, low-cost: if the URL has utm_* or gclid params
+     (someone arrived from an ad or tracked link), stash them in
+     sessionStorage so they survive navigation within the same visit —
+     e.g. landing on pm.html from an ad, then clicking through to the PM
+     funnel still has the original campaign attached. If a page has no
+     UTM params (a normal internal click), the previously-stored values
+     from earlier in the session are left alone rather than being wiped.
+     Any form/funnel on the site can read window.asUTM() to attach these
+     to a submission. Does nothing if there's nothing to capture and
+     nothing already stored — no sessionStorage writes on a totally
+     untracked visit. ---------- */
+  (function(){
+    var params = new URLSearchParams(window.location.search);
+    var keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid'];
+    var found = false;
+    keys.forEach(function(k){
+      var v = params.get(k);
+      if (v) { sessionStorage.setItem('as_' + k, v.slice(0, 150)); found = true; }
+    });
+    if (found) {
+      sessionStorage.setItem('as_landing_page', window.location.pathname);
+    }
+  })();
+  window.asUTM = function(){
+    return {
+      utmSource: sessionStorage.getItem('as_utm_source') || '',
+      utmMedium: sessionStorage.getItem('as_utm_medium') || '',
+      utmCampaign: sessionStorage.getItem('as_utm_campaign') || '',
+      utmContent: sessionStorage.getItem('as_utm_content') || '',
+      utmTerm: sessionStorage.getItem('as_utm_term') || '',
+      gclid: sessionStorage.getItem('as_gclid') || '',
+      landingPage: sessionStorage.getItem('as_landing_page') || window.location.pathname
+    };
+  };
+
   /* ---------- primary nav: simplified per the Aug 2026 UX feedback brief.
      Suggested IA — Rentals / Buy / Sell / Property Management / About /
      Contact — six items so it reads clearly at a glance on mobile and fits
