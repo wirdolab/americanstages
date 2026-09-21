@@ -434,6 +434,17 @@ em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--ac
    causing horizontal overflow or a zero-height flash while it loads. */
 #idxWidget{width:100%;min-height:60px;overflow-x:hidden;margin-bottom:12px;}
 
+/* Safety cap below the desktop breakpoint: at some intermediate/narrow
+   widths the widget's own internal height calculation can misfire and
+   inflate its container to tens of thousands of pixels tall (mostly
+   blank) — a quirk in the third-party widget, not our layout. Capping
+   the height and letting it scroll internally means that quirk can
+   never turn the whole page into a wall of blank space; the search
+   UI stays reachable and usable regardless. */
+@media(max-width:767px){
+  #idxWidget{max-height:78vh;overflow-y:auto;-webkit-overflow-scrolling:touch;border-radius:16px;}
+}
+
 /* ---------- form ---------- */
 form.lead{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
 form.lead .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
