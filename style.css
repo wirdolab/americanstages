@@ -428,6 +428,12 @@ em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--ac
 }
 .idx-note strong{color:var(--ink);display:block;margin-bottom:4px;font-size:13.5px;}
 
+/* ---------- iHomeFinder Kestrel widget host ----------
+   Full-width on both mobile and desktop; the widget itself is
+   responsive internally, this just keeps its container from ever
+   causing horizontal overflow or a zero-height flash while it loads. */
+#idxWidget{width:100%;min-height:60px;overflow-x:hidden;margin-bottom:12px;}
+
 /* ---------- form ---------- */
 form.lead{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
 form.lead .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -1093,7 +1099,9 @@ button.cta{border:none;font-family:inherit;}
   body[data-page="santa-maria"] .wrap,
   body[data-page="santa-barbara-goleta"] .wrap,
   body[data-page="buellton"] .wrap,
-  body[data-page="slo"] .wrap{
+  body[data-page="slo"] .wrap,
+  body[data-page="listings"] .wrap,
+  body[data-page="idx"] .wrap{
     max-width:1100px;
   }
   body[data-page="buy"] .glass-sheet,
@@ -1109,7 +1117,9 @@ button.cta{border:none;font-family:inherit;}
   body[data-page="santa-maria"] .glass-sheet,
   body[data-page="santa-barbara-goleta"] .glass-sheet,
   body[data-page="buellton"] .glass-sheet,
-  body[data-page="slo"] .glass-sheet{
+  body[data-page="slo"] .glass-sheet,
+  body[data-page="listings"] .glass-sheet,
+  body[data-page="idx"] .glass-sheet{
     padding:52px 60px 50px;
   }
   body[data-page="buy"] .hero h1,

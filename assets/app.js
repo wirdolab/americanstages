@@ -357,9 +357,16 @@
     document.addEventListener('mouseleave', function(){ glow.classList.remove('on'); });
   }
 
-  /* ---------- subtle cursor tilt on the glass sheet ---------- */
+  /* ---------- subtle cursor tilt on the glass sheet ----------
+     Skipped on pages hosting the iHomeFinder IDX widget: putting a
+     live rotateX/rotateY 3D transform on the container while the
+     widget's map/list re-renders under the cursor causes it to
+     flicker/disappear on hover (the embedded map & absolutely-
+     positioned widget internals don't survive being repainted at a
+     different 3D angle every frame). ---------- */
   var sheet = document.querySelector('.glass-sheet');
-  if (sheet && pointerFine && !reducedMotion) {
+  var hasIdxWidget = !!document.getElementById('idxWidget');
+  if (sheet && pointerFine && !reducedMotion && !hasIdxWidget) {
     var tiltRaf = null, mx = 0, my = 0;
     sheet.addEventListener('mousemove', function(e){
       var r = sheet.getBoundingClientRect();
