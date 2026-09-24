@@ -1,0 +1,36 @@
+# 301 redirects from the old Wix site (americanstages.com), built
+# ahead of the domain cutover so nothing 404s once DNS points here.
+# Cloudflare Pages reads this file automatically — no extra setup
+# needed. Paths are relative to whatever domain serves this site.
+
+# ---------- Main pages ----------
+/services-4                /pm.html                          301
+/services-5                /rent.html                        301
+/featured-listings         /featured-listings.html           301
+/about-3                   /about.html                       301
+/markets                   /markets.html                     301
+/listings                  /listings.html                    301
+/listing                   /listings.html                    301
+/listing-report            /listings.html                    301
+/contact                   /contact.html                     301
+/valuation                 /sell.html                        301
+/lompocpropertymanagement  /lompoc-property-management.html  301
+/american-stages-blog      /blog.html                        301
+/lompoc-realtors           /contact.html                     301
+
+# Empty/unused pages on the old site — send to home
+/property-organizer        /index.html                       301
+/email-alerts               /index.html                       301
+/thank-you                  /index.html                       301
+
+# ---------- Blog posts with a direct equivalent on the new site ----------
+/post/is-now-the-right-time-to-rent-or-buy-on-the-central-coast-in-2026        /blog-rent-or-buy-2026.html       301
+/post/closing-2025-opening-2026-what-the-central-coast-real-estate-market-is-really-telling-us   /blog-market-outlook-2026.html    301
+/post/high-interest-rates-prop-13-a-frozen-california-housing-market-late-2025  /blog-prop13-rate-freeze.html    301
+/post/section-8-housing-term-limits-in-california-what-you-should-know         /blog-section8-term-limits.html  301
+
+# All other old blog posts (2022–2025, no 1:1 replacement built yet) →
+# the new blog index, so at least visitors land somewhere real instead
+# of a 404. Must stay BELOW the four specific /post/ rules above —
+# Cloudflare Pages matches redirects top-to-bottom, first match wins.
+/post/*                     /blog.html                        301
