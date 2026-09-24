@@ -428,6 +428,50 @@
     }
   }
 
+  /* ---------- live YouTube Shorts grid (About page "Our Story").
+     Fetches /api/youtube-shorts (a Cloudflare Function that reads the
+     channel's public RSS feed) and renders the 3 newest Shorts as
+     lightweight thumbnail cards linking out to YouTube — no embedded
+     players, so this stays fast and doesn't autoplay anything. Fails
+     silently (grid just stays empty) if the API/network isn't
+     available, e.g. on GitHub Pages, which has no serverless
+     Functions. ---------- */
+  var ytShortsGrid = document.getElementById('ytShortsGrid');
+  if (ytShortsGrid) {
+    fetch('/api/youtube-shorts')
+      .then(function(res){ return res.ok ? res.json() : null; })
+      .then(function(data){
+        if (!data || !data.ok || !data.shorts || !data.shorts.length) return;
+        data.shorts.forEach(function(short){
+          var card = document.createElement('a');
+          card.className = 'yt-short-card';
+          card.href = short.url;
+          card.target = '_blank';
+          card.rel = 'noopener';
+          card.setAttribute('aria-label', short.title || 'Watch on YouTube');
+
+          var img = document.createElement('img');
+          img.src = short.thumbnail;
+          img.alt = '';
+          img.loading = 'lazy';
+
+          var play = document.createElement('span');
+          play.className = 'yt-short-play';
+          play.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+
+          var titleEl = document.createElement('span');
+          titleEl.className = 'yt-short-title';
+          titleEl.textContent = short.title || '';
+
+          card.appendChild(img);
+          card.appendChild(play);
+          card.appendChild(titleEl);
+          ytShortsGrid.appendChild(card);
+        });
+      })
+      .catch(function(){ /* silent — grid just stays empty */ });
+  }
+
   /* ---------- lead forms (Contact, Buy, Sell): real submission via
      Web3Forms instead of mailto:. mailto: only opens the visitor's own
      email client — unreliable on mobile and easy to abandon. Web3Forms'
