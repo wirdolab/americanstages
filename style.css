@@ -389,7 +389,7 @@ em{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--ac
 .social svg{width:16px;height:16px;}
 
 /* ---------- agent icon links (email / Instagram) ---------- */
-.agent-links{display:flex;gap:8px;margin-top:8px;}
+.agent-links{display:flex;gap:8px;margin-top:8px;justify-content:center;}
 .agent-links a{
   width:32px;height:32px;border-radius:50%;border:1px solid var(--glass-border);background:var(--glass);
   -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
